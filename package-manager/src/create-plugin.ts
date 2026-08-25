@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, rename, rm, writeFile } from "node:fs/promises";
-import { join, relative, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 
 import { getPluginKindConfig, type PluginKind } from "./plugin-kinds.js";
 import { toKebabCase, toPascalCase, toSnakeCase } from "./naming.js";
@@ -10,6 +10,8 @@ import {
   renderPackageJson,
   renderSource,
   renderTsConfig,
+  renderWeb,
+  renderWebStyles,
   type TemplateValues,
 } from "./templates.js";
 
@@ -74,8 +76,13 @@ export async function createPlugin(
     ["package.json", renderPackageJson(plugin)],
     ["tsconfig.json", renderTsConfig()],
     [join("src", "index.ts"), renderIndex(kinds)],
+    [join("web", "styles.css"), renderWebStyles()],
     ...interfaces.map(
       (item) => [join("src", `${item.kind}.ts`), renderSource(item)] as const,
+    ),
+    ...interfaces.map(
+      (item) =>
+        [join("web", item.kind, "index.tsx"), renderWeb(item)] as const,
     ),
   ]);
 
@@ -85,11 +92,12 @@ export async function createPlugin(
   );
 
   try {
-    await mkdir(join(temporaryDirectory, "src"), { recursive: true });
     await Promise.all(
-      [...files].map(([path, contents]) =>
-        writeFile(join(temporaryDirectory, path), contents, "utf8"),
-      ),
+      [...files].map(async ([path, contents]) => {
+        const destination = join(temporaryDirectory, path);
+        await mkdir(dirname(destination), { recursive: true });
+        await writeFile(destination, contents, "utf8");
+      }),
     );
     await rename(temporaryDirectory, packageDirectory);
   } catch (error) {

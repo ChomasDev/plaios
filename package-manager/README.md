@@ -26,5 +26,21 @@ A plugin may implement any combination of these interfaces. The creator writes
 one module per interface, exports them from `src/index.ts`, and registers all of
 them in the plugin's `agent-os.package.yaml` manifest.
 
+Each selected interface also receives its own React microfrontend entry:
+
+```text
+packages/example/
+├── src/
+│   ├── input.ts
+│   └── output.ts
+└── web/
+    ├── input/index.tsx
+    ├── output/index.tsx
+    └── styles.css
+```
+
+The generated screen uses the shared shadcn/Tailwind configuration editor from
+`@agent-os/microfrontend` and can be replaced with capability-specific UI.
+
 Publishing is intentionally not implemented yet. It will be added as a separate
 command once the registry backend exists.

@@ -231,8 +231,9 @@ ${exports}
 
 Next:
   1. Run pnpm install
-  2. Implement the TODOs in ${createdPath}/src/*.ts
-  3. Run pnpm --filter ${created.packageName} typecheck`);
+  2. Implement the runtime TODOs in ${createdPath}/src/*.ts
+  3. Customize each interface screen in ${createdPath}/web/*/index.tsx
+  4. Run pnpm --filter ${created.packageName} typecheck`);
   } finally {
     readline.close();
   }

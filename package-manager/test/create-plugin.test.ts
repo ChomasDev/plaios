@@ -23,7 +23,7 @@ test("creates one plugin with multiple interfaces without overwriting", async ()
 
     const packageJson = JSON.parse(
       await readFile(join(created.packageDirectory, "package.json"), "utf8"),
-    ) as { name: string };
+    ) as { name: string; main: string };
     const manifest = await readFile(
       join(created.packageDirectory, "agent-os.package.yaml"),
       "utf8",
@@ -32,8 +32,14 @@ test("creates one plugin with multiple interfaces without overwriting", async ()
       join(created.packageDirectory, "src", "index.ts"),
       "utf8",
     );
+    const webStyles = await readFile(
+      join(created.packageDirectory, "web", "styles.css"),
+      "utf8",
+    );
 
     assert.equal(packageJson.name, "@agent-os/example-plugin");
+    assert.equal(packageJson.main, "./dist/src/index.js");
+    assert.match(webStyles, /@agent-os\/microfrontend\/styles\.css/);
     assert.deepEqual(
       created.interfaces.map((item) => item.kind),
       PLUGIN_KINDS,
@@ -41,10 +47,17 @@ test("creates one plugin with multiple interfaces without overwriting", async ()
 
     for (const kind of PLUGIN_KINDS) {
       assert.match(manifest, new RegExp(`kind: ${kind}`));
+      assert.match(manifest, new RegExp(`entry: \\.\/web\/${kind}`));
       assert.match(index, new RegExp(`\\./${kind}\\.js`));
       assert.ok(
         await readFile(
           join(created.packageDirectory, "src", `${kind}.ts`),
+          "utf8",
+        ),
+      );
+      assert.ok(
+        await readFile(
+          join(created.packageDirectory, "web", kind, "index.tsx"),
           "utf8",
         ),
       );

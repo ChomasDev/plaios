@@ -17,15 +17,20 @@ export function renderPackageJson(values: TemplateValues): string {
       version: "0.1.0",
       private: true,
       type: "module",
-      sideEffects: false,
-      files: ["dist", "agent-os.package.yaml"],
-      main: "./dist/index.js",
-      types: "./dist/index.d.ts",
+      sideEffects: ["**/*.css"],
+      files: ["dist", "web", "agent-os.package.yaml"],
+      main: "./dist/src/index.js",
+      types: "./dist/src/index.d.ts",
       exports: {
         ".": {
-          types: "./dist/index.d.ts",
-          import: "./dist/index.js",
+          types: "./dist/src/index.d.ts",
+          import: "./dist/src/index.js",
         },
+        "./web/*": {
+          types: "./dist/web/*/index.d.ts",
+          import: "./dist/web/*/index.js",
+        },
+        "./web/styles.css": "./web/styles.css",
       },
       scripts: {
         build: "tsc -p tsconfig.json",
@@ -33,6 +38,15 @@ export function renderPackageJson(values: TemplateValues): string {
       },
       dependencies: {
         "@agent-os/core": "workspace:*",
+        "@agent-os/microfrontend": "workspace:*",
+      },
+      peerDependencies: {
+        react: ">=19.0.0",
+      },
+      devDependencies: {
+        "@types/react": "^19.0.0",
+        react: "19.2.4",
+        typescript: "7.0.2",
       },
     },
     null,
@@ -49,8 +63,9 @@ export function renderTsConfig(): string {
         moduleResolution: "NodeNext",
         lib: ["ES2022", "DOM"],
         strict: true,
-        rootDir: "src",
+        rootDir: ".",
         outDir: "dist",
+        jsx: "react-jsx",
         declaration: true,
         declarationMap: true,
         sourceMap: true,
@@ -58,7 +73,7 @@ export function renderTsConfig(): string {
         isolatedModules: true,
         skipLibCheck: true,
       },
-      include: ["src/**/*.ts"],
+      include: ["src/**/*.ts", "src/**/*.tsx", "web/**/*.ts", "web/**/*.tsx"],
     },
     null,
     2,
@@ -81,7 +96,11 @@ export function renderManifest(interfaces: readonly TemplateValues[]): string {
     className: ${item.className}
     description: TODO describe this interface
     permissions: []
-    required: []`,
+    required: []
+    web:
+      entry: ./web/${item.kind}
+      export: default
+      styles: ./web/styles.css`,
     )
     .join("\n");
 
@@ -114,6 +133,26 @@ export function renderSource(values: TemplateValues): string {
   };
 
   return renderers[values.kind](values);
+}
+
+export function renderWeb(values: TemplateValues): string {
+  return `"use client";
+
+import {
+  CapabilityMicrofrontend,
+  type MicrofrontendProps,
+} from "@agent-os/microfrontend";
+
+export default function ${values.className}Microfrontend(
+  props: MicrofrontendProps,
+) {
+  return <CapabilityMicrofrontend {...props} />;
+}
+`;
+}
+
+export function renderWebStyles(): string {
+  return `@import "@agent-os/microfrontend/styles.css";\n\n@source ".";\n`;
 }
 
 function renderInput({ className, name }: TemplateValues): string {

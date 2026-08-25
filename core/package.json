@@ -5,17 +5,18 @@
   "private": true,
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/index.js"
     },
     "./domain": {
-      "types": "./dist/domain/index.d.ts",
+      "types": "./src/domain/index.ts",
       "import": "./dist/domain/index.js"
     }
   },

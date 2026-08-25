@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "base-nova",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "rtl": false,
+  "aliases": {
+    "components": "@agent-os/microfrontend/components",
+    "ui": "@agent-os/microfrontend/components",
+    "lib": "@agent-os/microfrontend/lib",
+    "utils": "@agent-os/microfrontend/lib/utils",
+    "hooks": "@agent-os/microfrontend/hooks"
+  },
+  "registries": {}
+}
