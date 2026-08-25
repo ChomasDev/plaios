@@ -1,0 +1,97 @@
+import type { JsonSchema } from "../capabilities/capability-manifest.js";
+
+export type AIProviderName = "openai" | (string & {});
+
+export interface AIModelSettings {
+  maxOutputTokens?: number;
+  temperature?: number;
+  topP?: number;
+  maxRetries?: number;
+  timeoutMs?: number;
+}
+
+export interface AIProcessOptions {
+  stream?: boolean;
+  instructions?: string;
+  settings?: AIModelSettings;
+  signal?: AbortSignal;
+}
+
+export interface AIImageInput {
+  path: string;
+  mediaType?: string;
+}
+
+export type AIInput =
+  | string
+  | {
+      text: string;
+      images: readonly AIImageInput[];
+    };
+
+export type AIProcessResult =
+  | {
+      type: "text";
+      text: string;
+    }
+  | {
+      type: "stream";
+      stream: AsyncIterable<string>;
+    };
+
+export interface AIFunctionDefinition<TArguments = unknown> {
+  name: string;
+  description: string;
+  inputSchema: JsonSchema;
+  strict?: boolean;
+}
+
+export interface AIFunctionCallResult<TArguments = unknown> {
+  type: "function-call";
+  name: string;
+  callId: string;
+  arguments: TArguments;
+}
+
+export interface AIFunctionExecutionContext {
+  callId: string;
+  signal?: AbortSignal;
+}
+
+export interface AIExecutableFunctionDefinition<
+  TArguments = unknown,
+  TOutput = unknown,
+> extends AIFunctionDefinition<TArguments> {
+  execute(
+    arguments_: TArguments,
+    context: AIFunctionExecutionContext,
+  ): TOutput | Promise<TOutput>;
+}
+
+export interface AIFunctionProcessOptions extends AIProcessOptions {
+  maxSteps?: number;
+}
+
+/** Provider-neutral model contract implemented by provider packages. */
+export interface AIProvider {
+  readonly provider: AIProviderName;
+  readonly model: string;
+  readonly settings: Readonly<AIModelSettings>;
+
+  processInput(
+    input: AIInput,
+    options?: AIProcessOptions,
+  ): Promise<AIProcessResult>;
+
+  functionCall<TArguments>(
+    input: string,
+    definition: AIFunctionDefinition<TArguments>,
+    options?: Omit<AIProcessOptions, "stream">,
+  ): Promise<AIFunctionCallResult<TArguments>>;
+
+  processWithFunctions(
+    input: AIInput,
+    definitions: readonly AIExecutableFunctionDefinition[],
+    options?: AIFunctionProcessOptions,
+  ): Promise<AIProcessResult>;
+}
