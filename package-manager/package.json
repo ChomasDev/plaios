@@ -1,0 +1,37 @@
+{
+  "name": "@agent-os/package-manager",
+  "version": "0.1.0",
+  "description": "CLI for creating and managing Agent OS plugin packages",
+  "type": "module",
+  "bin": {
+    "agentos": "./dist/src/cli.js"
+  },
+  "files": [
+    "dist/src"
+  ],
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/make-cli-executable.mjs",
+    "prepack": "pnpm build",
+    "test": "pnpm build && node --test dist/test/**/*.test.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.28.0"
+}
