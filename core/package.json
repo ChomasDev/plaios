@@ -2,7 +2,7 @@
   "name": "@agent-os/core",
   "version": "0.1.0",
   "description": "Provider-neutral contracts for building an agent operating system",
-  "private": true,
+  "private": false,
   "type": "module",
   "files": [
     "dist",

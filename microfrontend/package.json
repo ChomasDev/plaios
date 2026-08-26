@@ -2,7 +2,7 @@
   "name": "@agent-os/microfrontend",
   "version": "0.1.0",
   "description": "Shared contracts and shadcn-based UI for Agent OS microfrontends",
-  "private": true,
+  "private": false,
   "type": "module",
   "sideEffects": [
     "**/*.css"

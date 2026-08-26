@@ -54,6 +54,28 @@ importers:
         specifier: 7.0.2
         version: 7.0.2
 
+  packages/sqlite:
+    dependencies:
+      '@agent-os/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@agent-os/microfrontend':
+        specifier: workspace:*
+        version: link:../../microfrontend
+    devDependencies:
+      '@types/node':
+        specifier: 24.13.3
+        version: 24.13.3
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.18
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+
   packages/telegram:
     dependencies:
       '@agent-os/core':
