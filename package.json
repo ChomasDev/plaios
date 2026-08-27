@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "agentos": "pnpm --filter @agent-os/package-manager build && node package-manager/dist/src/cli.js",
+    "agentos": "pnpm --filter @agent-os/app-dynamic build && pnpm --filter @agent-os/package-manager build && node package-manager/dist/src/cli.js",
     "build": "pnpm -r --if-present build",
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck"

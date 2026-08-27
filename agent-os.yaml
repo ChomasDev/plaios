@@ -1,0 +1,71 @@
+schemaVersion: 1
+registry: http://localhost:4873
+server:
+  host: 0.0.0.0
+  port: 3100
+components:
+  - package: "@agent-os/sqlite"
+    version: latest
+    interface: sqlite.database
+    instanceId: database:main
+    config:
+      databasePath: .agent-os/data/agent-os.sqlite
+  - package: "@agent-os/telegram"
+    version: latest
+    interface: telegram.input
+    instanceId: input:telegram
+    config: {}
+  - package: "@agent-os/telegram"
+    version: latest
+    interface: telegram.output
+    instanceId: output:telegram
+    config: {}
+  - package: "@agent-os/codex"
+    version: 0.1.0
+    interface: codex.ai
+    instanceId: ai:codex
+    config:
+      model: gpt-5.6-sol
+      skipGitRepoCheck: true
+      sandboxMode: read-only
+      approvalPolicy: never
+      networkAccessEnabled: false
+      webSearchMode: disabled
+  - package: "@agent-os/env-node"
+    version: 0.1.0
+    interface: env-node.process
+    instanceId: env:env-node
+    config: {}
+  - package: "@agent-os/env-node"
+    version: 0.1.0
+    interface: env-node.dotenv
+    instanceId: env:env-node:2
+    config:
+      filePath: .env
+      exampleFilePath: .env.example
+      required: false
+  - package: "@agent-os/env-node"
+    version: 0.1.0
+    interface: env-node.composite
+    instanceId: env:env-node:3
+    config: {}
+  - package: "@agent-os/discovery-memory"
+    version: 0.1.0
+    interface: discovery-memory.discovery
+    instanceId: discovery:discovery-memory
+    config: {}
+  - package: "@agent-os/orchestrator-default"
+    version: 0.1.0
+    interface: orchestrator-default.orchestrator
+    instanceId: orchestrator:orchestrator-default
+    config:
+      fastPath: false
+      maxCapabilities: 50
+  - package: "@agent-os/memory-graph"
+    version: 0.1.3
+    interface: memory-graph.memory
+    instanceId: memory:memory-graph
+    config:
+      accessBoost: 0.1
+      halfLifeMs: 2592000000
+      traversalDepth: 2

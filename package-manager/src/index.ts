@@ -12,3 +12,4 @@ export {
   type PluginKindConfig,
 } from "./plugin-kinds.js";
 export { findWorkspaceRoot } from "./workspace.js";
+export { main } from "./cli.js";

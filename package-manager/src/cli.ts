@@ -5,6 +5,7 @@ import { realpathSync } from "node:fs";
 import { stdin, stdout } from "node:process";
 import { relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { runStart } from "@agent-os/app-dynamic";
 
 import { createPlugin } from "./create-plugin.js";
 import {
@@ -29,12 +30,14 @@ function printMainHelp(): void {
 
 Usage:
   agentos create [kinds] [name] [options]
+  agentos start [options]
 
 Commands:
   create    Scaffold a new plugin package
+  start     Install configured packages and start the dynamic control plane
 
 Run \`agentos create --help\` for create options.
-Publishing will be added when the registry backend is available.`);
+Run \`agentos start --help\` for start options.`);
 }
 
 function printCreateHelp(): void {
@@ -252,6 +255,11 @@ export async function main(
 
   if (command === "create") {
     await runCreate(commandArguments, currentDirectory);
+    return;
+  }
+
+  if (command === "start") {
+    await runStart(commandArguments, currentDirectory);
     return;
   }
 
