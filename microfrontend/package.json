@@ -1,6 +1,6 @@
 {
   "name": "@agent-os/microfrontend",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Shared contracts and shadcn-based UI for Agent OS microfrontends",
   "private": false,
   "type": "module",
@@ -35,6 +35,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "prepack": "pnpm build",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {

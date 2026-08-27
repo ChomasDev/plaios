@@ -1,5 +1,14 @@
 export { Badge, type BadgeProps } from "./components/badge.js";
 export {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "./components/breadcrumb.js";
+export {
   Button,
   buttonVariants,
   type ButtonProps,

@@ -62,7 +62,7 @@ components:
       fastPath: false
       maxCapabilities: 50
   - package: "@agent-os/memory-graph"
-    version: 0.1.3
+    version: 0.3.0
     interface: memory-graph.memory
     instanceId: memory:memory-graph
     config:
