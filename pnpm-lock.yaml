@@ -80,6 +80,28 @@ importers:
         specifier: 7.0.2
         version: 7.0.2
 
+  packages/action-home-assistant:
+    dependencies:
+      '@agent-os/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@agent-os/microfrontend':
+        specifier: workspace:*
+        version: link:../../microfrontend
+    devDependencies:
+      '@types/node':
+        specifier: 24.13.3
+        version: 24.13.3
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.18
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+
   packages/action-memory-retrieval:
     dependencies:
       '@agent-os/core':
@@ -306,6 +328,34 @@ importers:
       '@agent-os/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
+    devDependencies:
+      '@types/node':
+        specifier: 24.13.3
+        version: 24.13.3
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.18
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+
+  packages/jev-orhcestator:
+    dependencies:
+      '@agent-os/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@agent-os/env-node':
+        specifier: workspace:*
+        version: link:../env-node
+      '@agent-os/microfrontend':
+        specifier: workspace:*
+        version: link:../../microfrontend
+      '@typesafe-ai/sdk':
+        specifier: ^0.6.0
+        version: 0.6.0
     devDependencies:
       '@types/node':
         specifier: 24.13.3
@@ -1295,6 +1345,10 @@ packages:
 
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
+
+  '@typesafe-ai/sdk@0.6.0':
+    resolution: {integrity: sha512-IddX+Q0XM+VagOUZFeP7wZjaO4SHMdvnh2zEBdrZZnXedWI3BNK1lKhMx3ayrkFWvVLbVcUHJy6AVZlY+e6Jaw==}
+    engines: {node: '>=20'}
 
   '@typescript/typescript-aix-ppc64@7.0.2':
     resolution: {integrity: sha512-MTKKkWB7p/0E9xi1d1tHtZ5PiLkGEMIq88pK2CubZjOsLtYTLqhgIgi6zepFa+9GHZ6h05NMCkQxGKiPXMxXtQ==}
@@ -3571,6 +3625,8 @@ snapshots:
   '@types/ws@8.18.1':
     dependencies:
       '@types/node': 24.13.3
+
+  '@typesafe-ai/sdk@0.6.0': {}
 
   '@typescript/typescript-aix-ppc64@7.0.2':
     optional: true

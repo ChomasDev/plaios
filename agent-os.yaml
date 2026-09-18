@@ -54,6 +54,13 @@ components:
     interface: discovery-memory.discovery
     instanceId: discovery:discovery-memory
     config: {}
+  - package: "@agent-os/agent-loop"
+    version: 0.1.0
+    interface: agent-loop.agent
+    instanceId: agent:agent-loop
+    config:
+      maxSteps: 100
+      maxCapabilities: 50
   - package: "@agent-os/orchestrator-default"
     version: 0.1.0
     interface: orchestrator-default.orchestrator
@@ -62,10 +69,17 @@ components:
       fastPath: false
       maxCapabilities: 50
   - package: "@agent-os/memory-graph"
-    version: 0.3.0
+    version: 0.4.3
     interface: memory-graph.memory
     instanceId: memory:memory-graph
     config:
       accessBoost: 0.1
       halfLifeMs: 2592000000
       traversalDepth: 2
+  - package: "@agent-os/action-memory-retrieval"
+    version: 0.1.1
+    interface: memory-retrieval.action
+    instanceId: action:memory-retrieval
+    config:
+      defaultLimit: 20
+      maxLimit: 50

@@ -1,0 +1,13 @@
+schemaVersion: 1
+registry: http://100.81.121.78:4873
+server:
+  host: 0.0.0.0
+  port: 3100
+components:
+  - package: "@agent-os/sqlite"
+    version: 0.1.3
+    interface: sqlite.database
+    instanceId: database:main
+    config:
+      databasePath: .agent-os/data/agent-os.sqlite
+      enableForeignKeys: true
