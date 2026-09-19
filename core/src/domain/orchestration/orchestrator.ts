@@ -27,6 +27,11 @@ export interface OrchestrationDecision {
   memoryProposals?: readonly MemoryProposal[];
   /** Extract durable memories after delivering the response, outside TTFT. */
   deferMemoryProposal?: boolean;
+  /**
+   * Skip the generative model and execute the selected capabilities with the
+   * raw user text. Used for capabilities that interpret natural language themselves.
+   */
+  bypassModel?: boolean;
   reason?: string;
 }
 

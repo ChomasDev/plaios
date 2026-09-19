@@ -1,6 +1,6 @@
 {
   "name": "@agent-os/core",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Provider-neutral contracts for building an agent operating system",
   "private": false,
   "type": "module",

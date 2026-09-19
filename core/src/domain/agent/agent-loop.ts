@@ -51,6 +51,11 @@ export interface AgentLoopOptions {
   stream: boolean;
   signal?: AbortSignal;
   onEvent?: AgentLoopEventHandler;
+  /**
+   * Execute the selected capabilities with the raw user text and return their
+   * summaries, without calling the generative model.
+   */
+  bypassModel?: boolean;
 }
 
 export interface AgentLoop {

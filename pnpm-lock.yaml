@@ -88,6 +88,9 @@ importers:
       '@agent-os/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
+      '@typesafe-ai/sdk':
+        specifier: ^0.6.0
+        version: 0.6.0
     devDependencies:
       '@types/node':
         specifier: 24.13.3
