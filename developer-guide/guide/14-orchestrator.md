@@ -9,7 +9,7 @@ The orchestrator sees the message once, before the agent loop, and writes the pl
 
 ## The contract
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export interface Orchestrator {
   orchestrate(
     message: InputMessage,
@@ -51,7 +51,7 @@ Orchestrators always receive `model` (the System 2 instance) and `capabilityDisc
 ## A tiny one to learn from
 
 ```ts src/orchestrator.ts
-import type { CapabilityDiscovery, InputMessage, OrchestrationDecision, Orchestrator, OutputInterface } from "@agent-os/core/domain";
+import type { CapabilityDiscovery, InputMessage, OrchestrationDecision, Orchestrator, OutputInterface } from "@plaios/core/domain";
 
 export class KeywordOrchestrator implements Orchestrator {
   constructor(private readonly options: { capabilityDiscovery: CapabilityDiscovery }) {}

@@ -9,7 +9,7 @@ The agent loop takes the plan and makes it happen: it loads the chosen capabilit
 
 ## The contract
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export interface AgentLoop {
   run(message: InputMessage, options: AgentLoopOptions): Promise<AIProcessResult>;
 }
@@ -32,7 +32,7 @@ Like orchestrators, agent loops always receive `model` and `capabilityDiscovery`
 ## The default loop, in 20 lines
 
 ```ts src/agent.ts
-import type { AgentLoop, AgentLoopOptions, AIExecutableFunctionDefinition, AIProcessResult, CapabilityDiscovery, InputMessage, System2 } from "@agent-os/core/domain";
+import type { AgentLoop, AgentLoopOptions, AIExecutableFunctionDefinition, AIProcessResult, CapabilityDiscovery, InputMessage, System2 } from "@plaios/core/domain";
 
 export class SimpleAgentLoop implements AgentLoop {
   constructor(private readonly options: { model: System2; capabilityDiscovery: CapabilityDiscovery }) {}
@@ -47,7 +47,7 @@ export class SimpleAgentLoop implements AgentLoop {
       strict: true,
       execute: (args, context) => capability.execute(args, { runId: message.id, callId: context.callId, sessionId: message.sessionId, userId: message.userId, startedAt: new Date(), signal: context.signal }),
     }));
-    const instructions = ["You are Agent OS.", String(message.metadata?.instructions ?? "")].join("\n");
+    const instructions = ["You are PLAIOS.", String(message.metadata?.instructions ?? "")].join("\n");
     return this.options.model.processWithFunctions(message.text, functions, { stream: options.stream, instructions, signal: options.signal, maxSteps: 25 });
   }
 }

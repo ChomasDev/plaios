@@ -9,7 +9,7 @@ An output receives the answer and delivers it. That is all. But two optional fie
 
 ## The contract
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export type OutputContent = string | AsyncIterable<string>;
 
 export interface OutputInterface {
@@ -32,7 +32,7 @@ export interface OutputInterface {
 Handle both, always:
 
 ```ts src/output.ts
-import type { OutputContent, OutputInterface } from "@agent-os/core/domain";
+import type { OutputContent, OutputInterface } from "@plaios/core/domain";
 
 export class SlackOutput implements OutputInterface {
   readonly channel = "slack";

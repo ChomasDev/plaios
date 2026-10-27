@@ -1,10 +1,10 @@
 {
-  "name": "@agent-os/package-manager",
+  "name": "@plaios/package-manager",
   "version": "0.9.1",
-  "description": "CLI for creating and managing Agent OS plugin packages",
+  "description": "CLI for creating and managing PLAIOS plugin packages",
   "type": "module",
   "bin": {
-    "agentos": "./dist/src/cli.js"
+    "plaios": "./dist/src/cli.js"
   },
   "files": [
     "dist/src",
@@ -19,7 +19,7 @@
     }
   },
   "dependencies": {
-    "@agent-os/app-dynamic": "workspace:*"
+    "@plaios/app-dynamic": "workspace:*"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/make-cli-executable.mjs",

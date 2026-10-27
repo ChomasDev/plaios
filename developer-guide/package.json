@@ -1,9 +1,9 @@
 {
-  "name": "@agent-os/developer-guide",
+  "name": "@plaios/developer-guide",
   "version": "0.1.1",
-  "description": "The Agent OS developer guide: build inputs, outputs, capabilities, memory and more, with an interactive map of how they talk",
+  "description": "The PLAIOS developer guide: build inputs, outputs, capabilities, memory and more, with an interactive map of how they talk",
   "keywords": [
-    "agent-os",
+    "plaios",
     "capability",
     "action",
     "docs",
@@ -42,8 +42,8 @@
     "typecheck": "node scripts/embed-guide.mjs && tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@agent-os/core": "workspace:*",
-    "@agent-os/microfrontend": "workspace:*",
+    "@plaios/core": "workspace:*",
+    "@plaios/microfrontend": "workspace:*",
     "lucide-react": "^0.544.0"
   },
   "peerDependencies": {

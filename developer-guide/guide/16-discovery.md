@@ -9,7 +9,7 @@ At boot, after every component is constructed, the host walks all of them and ca
 
 ## The contract
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export interface CapabilityDiscovery {
   register(capability: Capability): Promise<void>;
   get(id: string, version?: string): Promise<Capability | undefined>;

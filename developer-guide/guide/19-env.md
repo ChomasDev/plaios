@@ -9,7 +9,7 @@ Environment components load first, because everything else reads from them. The 
 
 ## The contract
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export interface Environment {
   get(key: string): string | undefined;
   getRequired(key: string): string;               // throws when missing
@@ -30,7 +30,7 @@ The host also uses it for you: a config field with `env: WEATHER_API_KEY` is fil
 A vault-backed environment is the classic case:
 
 ```ts src/env.ts
-import type { Environment } from "@agent-os/core/domain";
+import type { Environment } from "@plaios/core/domain";
 
 export class VaultEnvironment implements Environment {
   private readonly values: Record<string, string>;

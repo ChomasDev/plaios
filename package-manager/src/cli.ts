@@ -6,7 +6,7 @@ import { stdin, stdout } from "node:process";
 import { relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
-import { parseStartArguments, resolveConfigPath, runStart } from "@agent-os/app-dynamic";
+import { parseStartArguments, resolveConfigPath, runStart } from "@plaios/app-dynamic";
 
 import { createPlugin } from "./create-plugin.js";
 import { runOnboarding } from "./onboard.js";
@@ -28,36 +28,36 @@ interface CreateArguments {
 }
 
 function printMainHelp(): void {
-  console.log(`Agent OS package manager
+  console.log(`PLAIOS package manager
 
 Usage:
-  agentos                 Set up on first run, then start
-  agentos init            Run the setup again
-  agentos create [kinds] [name] [options]
-  agentos start [options]
+  plaios                 Set up on first run, then start
+  plaios init            Run the setup again
+  plaios create [kinds] [name] [options]
+  plaios start [options]
 
 Commands:
-  init      Choose the AI, channels and tools; writes agent-os.yaml and .env
+  init      Choose the AI, channels and tools; writes plaios.yaml and .env
   create    Scaffold a new plugin package
   start     Install configured packages and start the dynamic control plane
 
-Run \`agentos create --help\` for create options.
-Run \`agentos start --help\` for start options.`);
+Run \`plaios create --help\` for create options.
+Run \`plaios start --help\` for start options.`);
 }
 
 function printCreateHelp(): void {
-  console.log(`Create an Agent OS plugin package.
+  console.log(`Create an PLAIOS plugin package.
 
 Usage:
-  agentos create
-  agentos create action browser
-  agentos create input,output telegram
-  agentos create --kind ai --kind memory --name assistant --yes
+  plaios create
+  plaios create action browser
+  plaios create input,output telegram
+  plaios create --kind ai --kind memory --name assistant --yes
 
 Options:
   -k, --kind <kind>   Interface kind; repeat or use commas
   -n, --name <name>   Plugin implementation name
-      --root <path>   Agent OS workspace root
+      --root <path>   PLAIOS workspace root
   -y, --yes           Skip confirmation
   -h, --help          Show this help
 
@@ -257,9 +257,9 @@ export async function main(
   }
 
   if (command === "init") {
-    if (!stdin.isTTY || !stdout.isTTY) throw new Error("agentos init needs a terminal.");
+    if (!stdin.isTTY || !stdout.isTTY) throw new Error("plaios init needs a terminal.");
     const configPath = resolveConfigPath(currentDirectory, parseStartArguments(commandArguments).configPath);
-    if (await runOnboarding(configPath)) console.log("Run `agentos` to start.");
+    if (await runOnboarding(configPath)) console.log("Run `plaios` to start.");
     return;
   }
 

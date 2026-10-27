@@ -1,5 +1,5 @@
 "use client";
-import type { MicrofrontendProps } from "@agent-os/microfrontend";
+import type { MicrofrontendProps } from "@plaios/microfrontend";
 import { useEffect, useMemo, useState } from "react";
 
 import { GUIDE, PARTS } from "../../src/guide/index.js";
@@ -29,8 +29,8 @@ export default function DeveloperGuide(_props: MicrofrontendProps) {
 
 function Hero() {
   return <header className="dg-hero">
-    <p className="dg-eyebrow">Agent OS · Developer guide</p>
-    <h1>Every part of Agent OS is a plugin.<br /><span>Including the part you are about to write.</span></h1>
+    <p className="dg-eyebrow">PLAIOS · Developer guide</p>
+    <h1>Every part of PLAIOS is a plugin.<br /><span>Including the part you are about to write.</span></h1>
     <p className="dg-lede">The memory, the model, the thing that decides what happens next, the chat you are reading this in: all of it is a package with a manifest, a class and a page. Swap any of them. Add your own. This guide shows you exactly how, down to the bytes the host hands your constructor.</p>
     <ul className="dg-stats">
       <li><strong>11</strong> component kinds</li>

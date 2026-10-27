@@ -2,7 +2,7 @@ schemaVersion: 1
 id: developer-guide
 name: Developer Guide
 version: 0.1.1
-description: How to build Agent OS plugins, with an interactive map of how every component talks to the others
+description: How to build PLAIOS plugins, with an interactive map of how every component talks to the others
 interfaces:
   - id: developer-guide.action
     kind: action
@@ -10,7 +10,7 @@ interfaces:
     entry: .
     export: .
     className: DeveloperGuideCapability
-    description: Serves the Agent OS developer guide to people (its page) and to the agent (read_developer_guide)
+    description: Serves the PLAIOS developer guide to people (its page) and to the agent (read_developer_guide)
     permissions: []
     required: []
     startup: { when: always }

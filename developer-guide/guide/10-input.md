@@ -9,7 +9,7 @@ Telegram, the HTTP API, cron jobs, the voice line and this very chat are all inp
 
 ## The contract
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export interface InputInterface {
   readonly channel: InputChannel;           // "telegram", "cron", "web"...
   start(listener: InputListener): Promise<void>;
@@ -35,7 +35,7 @@ export interface InputMessage {
 ```ts src/input.ts
 import { createServer, type Server } from "node:http";
 import { randomUUID } from "node:crypto";
-import type { InputInterface, InputListener } from "@agent-os/core/domain";
+import type { InputInterface, InputListener } from "@plaios/core/domain";
 
 export class WebhookInput implements InputInterface {
   readonly channel = "webhook";

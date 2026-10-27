@@ -19,7 +19,7 @@ export function findWorkspaceRoot(startDirectory: string): string {
 
     if (current === filesystemRoot) {
       throw new Error(
-        "Could not find an Agent OS workspace. Run this command inside AgentOsv2 or pass --root <path>.",
+        "Could not find an PLAIOS workspace. Run this command inside plaios or pass --root <path>.",
       );
     }
 
@@ -31,7 +31,7 @@ export function assertWorkspaceRoot(directory: string): string {
   const root = resolve(directory);
   if (!isAgentOsWorkspace(root)) {
     throw new Error(
-      `Not an Agent OS workspace: ${root}. Expected pnpm-workspace.yaml and core/package.json.`,
+      `Not an PLAIOS workspace: ${root}. Expected pnpm-workspace.yaml and core/package.json.`,
     );
   }
   return root;

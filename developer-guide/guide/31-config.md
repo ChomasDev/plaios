@@ -31,7 +31,7 @@ Every `config` entry in your manifest becomes three things at once: a field on y
 | `key` | the option name your constructor receives |
 | `type` | `string`, `number`, `boolean` or `secret` |
 | `env` | environment variable to fall back on |
-| `default` | used when nothing else is set; written into `agent-os.yaml` on install |
+| `default` | used when nothing else is set; written into `plaios.yaml` on install |
 | `required` | `true` means the component will not start without a value |
 | `description` | shown under the field, and to the agent |
 
@@ -39,7 +39,7 @@ Every `config` entry in your manifest becomes three things at once: a field on y
 
 For each field, in this order:
 
-1. the value saved on the component page (in `agent-os.yaml`)
+1. the value saved on the component page (in `plaios.yaml`)
 2. the environment variable named by `env`, read through the environment component, then `process.env`
 3. `default`
 4. still empty and `required: true`: the component does not start, and Build shows *Missing required config "token" (HOME_ASSISTANT_TOKEN)*

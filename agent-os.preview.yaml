@@ -4,13 +4,13 @@ server:
   host: 127.0.0.1
   port: 3111
 components:
-  - package: "@agent-os/sqlite"
+  - package: "@plaios/sqlite"
     version: latest
     interface: sqlite.database
     instanceId: database:main
     config:
       databasePath: .agent-os/data/agent-os.sqlite
-  - package: "@agent-os/codex"
+  - package: "@plaios/codex"
     version: 0.1.0
     interface: codex.ai
     instanceId: ai:codex
@@ -22,12 +22,12 @@ components:
       networkAccessEnabled: false
       webSearchMode: disabled
       persistentProcess: true
-  - package: "@agent-os/env-node"
+  - package: "@plaios/env-node"
     version: 0.1.0
     interface: env-node.process
     instanceId: env:env-node
     config: {}
-  - package: "@agent-os/env-node"
+  - package: "@plaios/env-node"
     version: 0.1.0
     interface: env-node.dotenv
     instanceId: env:env-node:2
@@ -35,31 +35,31 @@ components:
       filePath: .env
       exampleFilePath: .env.example
       required: false
-  - package: "@agent-os/env-node"
+  - package: "@plaios/env-node"
     version: 0.1.0
     interface: env-node.composite
     instanceId: env:env-node:3
     config: {}
-  - package: "@agent-os/discovery-memory"
+  - package: "@plaios/discovery-memory"
     version: 0.1.0
     interface: discovery-memory.discovery
     instanceId: discovery:discovery-memory
     config: {}
-  - package: "@agent-os/agent-loop"
+  - package: "@plaios/agent-loop"
     version: 0.1.0
     interface: agent-loop.agent
     instanceId: agent:agent-loop
     config:
       maxSteps: 100
       maxCapabilities: 50
-  - package: "@agent-os/orchestrator-default"
+  - package: "@plaios/orchestrator-default"
     version: 0.1.0
     interface: orchestrator-default.orchestrator
     instanceId: orchestrator:orchestrator-default
     config:
       fastPath: false
       maxCapabilities: 50
-  - package: "@agent-os/memory-graph"
+  - package: "@plaios/memory-graph"
     version: 0.4.3
     interface: memory-graph.memory
     instanceId: memory:memory-graph
@@ -67,14 +67,14 @@ components:
       accessBoost: 0.1
       halfLifeMs: 2592000000
       traversalDepth: 2
-  - package: "@agent-os/action-memory-retrieval"
+  - package: "@plaios/action-memory-retrieval"
     version: 0.1.1
     interface: memory-retrieval.action
     instanceId: action:memory-retrieval
     config:
       defaultLimit: 20
       maxLimit: 50
-  - package: "@agent-os/action-gods-eye-view"
+  - package: "@plaios/action-gods-eye-view"
     version: 0.7.0
     interface: gods-eye-view.action
     instanceId: action:action-gods-eye-view

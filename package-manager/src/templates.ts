@@ -36,8 +36,8 @@ export function renderPackageJson(values: TemplateValues): string {
         typecheck: "tsc --noEmit -p tsconfig.json",
       },
       dependencies: {
-        "@agent-os/core": "workspace:*",
-        "@agent-os/microfrontend": "workspace:*",
+        "@plaios/core": "workspace:*",
+        "@plaios/microfrontend": "workspace:*",
       },
       peerDependencies: {
         react: ">=19.0.0",
@@ -120,7 +120,7 @@ export function renderWeb(values: TemplateValues): string {
 import {
   CapabilityMicrofrontend,
   type MicrofrontendProps,
-} from "@agent-os/microfrontend";
+} from "@plaios/microfrontend";
 
 /** The page microfrontend (required): the default export of this entry. */
 export default function ${values.className}Microfrontend(
@@ -135,7 +135,7 @@ export const openui = [];
 }
 
 export function renderWebStyles(): string {
-  return `@import "@agent-os/microfrontend/styles.css";\n\n@source ".";\n`;
+  return `@import "@plaios/microfrontend/styles.css";\n\n@source ".";\n`;
 }
 
 function renderInput({ className, name }: TemplateValues): string {
@@ -143,7 +143,7 @@ function renderInput({ className, name }: TemplateValues): string {
   InputInterface,
   InputListener,
   InputMessage,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export interface ${className}Options {
   sessionId?: string;
@@ -187,7 +187,7 @@ function renderOutput({ className, name }: TemplateValues): string {
   return `import type {
   OutputContent,
   OutputInterface,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export interface ${className}Options {}
 
@@ -213,7 +213,7 @@ function renderAction({ className, name, pascalName, snakeName }: TemplateValues
   CapabilityManifest,
   CapabilityResult,
   UIComponentSpec,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export interface ${pascalName}ActionInput {
   // TODO: define capability input.
@@ -285,7 +285,7 @@ function renderAgent({ className }: TemplateValues): string {
   AgentLoopOptions,
   AIProcessResult,
   InputMessage,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export interface ${className}Options {}
 
@@ -313,7 +313,7 @@ function renderOrchestrator({ className }: TemplateValues): string {
   Orchestrator,
   OrchestratorOptions,
   OutputInterface,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export interface ${className}Options {}
 
@@ -354,7 +354,7 @@ function renderDiscovery({ className }: TemplateValues): string {
   CapabilityDiscovery,
   CapabilityDiscoveryQuery,
   CapabilityManifest,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export class ${className} implements CapabilityDiscovery {
   private readonly capabilities = new Map<string, Capability[]>();
@@ -390,7 +390,7 @@ function renderDatabase({ className }: TemplateValues): string {
   return `import type {
   Database,
   DatabaseProvider,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export interface ${className}Options {}
 
@@ -417,7 +417,7 @@ function renderMemory({ className }: TemplateValues): string {
   Memory,
   MemoryEntry,
   MemoryQuery,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export interface ${className}Options {}
 
@@ -459,7 +459,7 @@ export class ${className} implements Memory {
 }
 
 function renderSystem1({ className }: TemplateValues): string {
-  return `import type { System1, SystemAnswers, SystemAskOptions, SystemQuestions } from "@agent-os/core/domain";
+  return `import type { System1, SystemAnswers, SystemAskOptions, SystemQuestions } from "@plaios/core/domain";
 
 export class ${className} implements System1 {
   readonly model = "default";
@@ -493,7 +493,7 @@ function renderSystem2({ className, name }: TemplateValues): string {
   SystemAnswers,
   SystemAskOptions,
   SystemQuestions,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export interface ${className}Options {
   model: string;
@@ -561,7 +561,7 @@ export class ${className} implements System2 {
 }
 
 function renderEnvironment({ className }: TemplateValues): string {
-  return `import type { Environment } from "@agent-os/core/domain";
+  return `import type { Environment } from "@plaios/core/domain";
 
 export interface ${className}Options {
   values?: Readonly<Record<string, string | undefined>>;

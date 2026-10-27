@@ -1,5 +1,5 @@
 {
-  "name": "@agent-os/core",
+  "name": "@plaios/core",
   "version": "0.2.0",
   "description": "Provider-neutral contracts for building an agent operating system",
   "private": false,

@@ -2,13 +2,13 @@ import { useState } from "react";
 
 import { EDGES, KIND_INFO, MESSAGE_PATH, NODES, type DiagramEdge, type DiagramNode, type Kind } from "./diagram-model.js";
 
-/** The map of Agent OS: point at a part to light up who it talks to; click it to read its chapter. */
+/** The map of PLAIOS: point at a part to light up who it talks to; click it to read its chapter. */
 export function ArchitectureMap({ onOpen }: { onOpen(kind: Kind): void }) {
   const [active, setActive] = useState<Kind>();
   const linked = (edge: DiagramEdge) => edge.from === active || edge.to === active;
   const near = (kind: Kind) => !active || kind === active || EDGES.some((edge) => linked(edge) && (edge.from === kind || edge.to === kind));
   return <div className="dg-map">
-    <svg viewBox="0 50 960 480" className="h-auto w-full min-w-[720px] select-none" onMouseLeave={() => setActive(undefined)} role="group" aria-label="How Agent OS components talk to each other">
+    <svg viewBox="0 50 960 480" className="h-auto w-full min-w-[720px] select-none" onMouseLeave={() => setActive(undefined)} role="group" aria-label="How PLAIOS components talk to each other">
       <defs>
         <marker id="dg-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9Z" className="fill-foreground/30" /></marker>
         <marker id="dg-arrow-on" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9Z" className="fill-primary" /></marker>

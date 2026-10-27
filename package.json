@@ -1,15 +1,15 @@
 {
-  "name": "agent-os-core",
+  "name": "plaios-workspace",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "agentos": "pnpm --filter @agent-os/app-dynamic build && pnpm --filter @agent-os/package-manager build && node package-manager/dist/src/cli.js",
+    "plaios": "pnpm --filter @plaios/app-dynamic build && pnpm --filter @plaios/package-manager build && node package-manager/dist/src/cli.js",
     "build": "pnpm -r --if-present build",
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
-    "landing:dev": "pnpm --filter @agent-os/app-dynamic landing:dev",
-    "landing:build": "pnpm --filter @agent-os/app-dynamic landing:build",
-    "landing:preview": "pnpm --filter @agent-os/app-dynamic landing:preview"
+    "landing:dev": "pnpm --filter @plaios/app-dynamic landing:dev",
+    "landing:build": "pnpm --filter @plaios/app-dynamic landing:build",
+    "landing:preview": "pnpm --filter @plaios/app-dynamic landing:preview"
   },
   "packageManager": "pnpm@10.28.0"
 }

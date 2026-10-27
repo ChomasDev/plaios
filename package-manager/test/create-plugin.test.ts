@@ -37,9 +37,9 @@ test("creates one plugin with multiple interfaces without overwriting", async ()
       "utf8",
     );
 
-    assert.equal(packageJson.name, "@agent-os/example-plugin");
+    assert.equal(packageJson.name, "@plaios/example-plugin");
     assert.equal(packageJson.main, "./dist/src/index.js");
-    assert.match(webStyles, /@agent-os\/microfrontend\/styles\.css/);
+    assert.match(webStyles, /@plaios\/microfrontend\/styles\.css/);
     assert.deepEqual(
       created.interfaces.map((item) => item.kind),
       PLUGIN_KINDS,

@@ -10,7 +10,7 @@ Every interface has a page. It is required: the Store refuses to install a packa
 
 The default export of your web entry (`./web/<kind>` by default) is a React component:
 
-```ts @agent-os/microfrontend
+```ts @plaios/microfrontend
 export interface MicrofrontendProps<TData = unknown> {
   component: ComponentInstance;   // instanceId, kind, id, version, config, fields
   data?: TData;                   // whatever your class's microfrontendData() returned
@@ -18,10 +18,10 @@ export interface MicrofrontendProps<TData = unknown> {
 }
 ```
 
-`@agent-os/microfrontend` gives you the building blocks the shipped plugins use: `MicrofrontendFrame`, `ConfigurationEditor`, `InstanceSummary`, `Card`, `Badge`, `Button`, `Input`, `Label`, `Textarea`, and `cn`. The two-line page is a real, useful page:
+`@plaios/microfrontend` gives you the building blocks the shipped plugins use: `MicrofrontendFrame`, `ConfigurationEditor`, `InstanceSummary`, `Card`, `Badge`, `Button`, `Input`, `Label`, `Textarea`, and `cn`. The two-line page is a real, useful page:
 
 ```tsx web/action/index.tsx
-import { CapabilityMicrofrontend, type MicrofrontendProps } from "@agent-os/microfrontend";
+import { CapabilityMicrofrontend, type MicrofrontendProps } from "@plaios/microfrontend";
 
 export default function WeatherPage(props: MicrofrontendProps) {
   return <CapabilityMicrofrontend {...props} />;   // config form + instance summary
@@ -61,14 +61,14 @@ What happens under the hood:
 
 ## Saving settings
 
-Call `onSaveConfig(config)` with the **whole** config object. The host writes `agent-os.yaml`, reloads the runtime, and your page re-renders with the new values. `ConfigurationEditor` does all of this for you.
+Call `onSaveConfig(config)` with the **whole** config object. The host writes `plaios.yaml`, reloads the runtime, and your page re-renders with the new values. `ConfigurationEditor` does all of this for you.
 
 ## Styling
 
 `web/styles.css` is loaded once, next to your page:
 
 ```css web/styles.css
-@import "@agent-os/microfrontend/styles.css";
+@import "@plaios/microfrontend/styles.css";
 @source ".";
 ```
 

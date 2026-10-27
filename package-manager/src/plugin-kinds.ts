@@ -69,7 +69,7 @@ const CONFIG: Record<PluginKind, PluginKindConfig> = {
   system2: {
     label: "System2",
     classSuffix: "System2",
-    description: "Connect Agent OS to a generative model provider",
+    description: "Connect PLAIOS to a generative model provider",
   },
   env: {
     label: "Environment",

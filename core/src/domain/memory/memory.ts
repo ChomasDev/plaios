@@ -1,7 +1,7 @@
 import type { MemoryEntry } from "./memory-entry.js";
 import type { MemoryQuery } from "./memory-query.js";
 
-/** Persistent memory store used by Agent OS and conversation history. */
+/** Persistent memory store used by PLAIOS and conversation history. */
 export interface Memory {
   remember(entry: MemoryEntry): Promise<void>;
   get(id: string): Promise<MemoryEntry | undefined>;

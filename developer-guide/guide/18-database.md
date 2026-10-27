@@ -17,7 +17,7 @@ If a database component is installed, every plugin receives `options.database`, 
 
 ## The contract
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export interface Database {
   readonly namespace: string;
   init(structure: DatabaseStructure): Promise<void>;
@@ -92,7 +92,7 @@ Three habits worth stealing:
 
 A database component implements `DatabaseProvider`:
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export interface DatabaseProvider {
   scope(namespace: string): Database;
   close?(): Promise<void>;

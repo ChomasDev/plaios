@@ -6,7 +6,7 @@ tagline: There is no core you are not allowed to replace.
 ---
 Most agent frameworks give you a brain and let you bolt tools onto it.
 
-Agent OS does the opposite.
+PLAIOS does the opposite.
 
 **There is no brain.** There is a host that loads packages, hands each one the others it asked for, and gets out of the way. The model is a package. The memory is a package. The thing that decides which tools to use is a package. Even the chat you are reading this in sits on the same contracts you are about to use.
 
@@ -16,7 +16,7 @@ You are not writing an extension to someone else's agent. You are writing **a pa
 
 ## Three ideas that make it work
 
-- **Contracts, not conventions.** Every kind of component is a TypeScript interface in `@agent-os/core/domain`. If your class satisfies it, the host can run it. No base classes, no decorators, no registration calls.
+- **Contracts, not conventions.** Every kind of component is a TypeScript interface in `@plaios/core/domain`. If your class satisfies it, the host can run it. No base classes, no decorators, no registration calls.
 - **Wiring is declared, not coded.** Your `agent-os.package.yaml` says what you are (`kind: input`) and what you need (`required: [system2]`). The host builds your constructor options from that. You never import another plugin.
 - **Every part has a face.** Each interface ships a page microfrontend, and capabilities can teach the model to draw live components right inside its answers.
 

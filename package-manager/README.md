@@ -1,29 +1,29 @@
-# Agent OS Package Manager
+# PLAIOS Package Manager
 
-CLI and programmatic API for creating Agent OS plugin packages.
+CLI and programmatic API for creating PLAIOS plugin packages.
 
-## Run Agent OS
+## Run PLAIOS
 
 ```sh
-pnpm agentos         # first run asks for the AI, channels and tools, writes agent-os.yaml + .env, then starts
-pnpm agentos init    # redo the setup
+pnpm plaios         # first run asks for the AI, channels and tools, writes plaios.yaml + .env, then starts
+pnpm plaios init    # redo the setup
 ```
 
 ## Create a plugin
 
-From the Agent OS workspace root:
+From the PLAIOS workspace root:
 
 ```sh
-pnpm agentos create
-pnpm agentos create input,output telegram --yes
-pnpm agentos create --kind ai --kind memory --name assistant --yes
+pnpm plaios create
+pnpm plaios create input,output telegram --yes
+pnpm plaios create --kind ai --kind memory --name assistant --yes
 ```
 
-The built binary is named `agentos`, so an installed or published copy uses the
+The built binary is named `plaios`, so an installed or published copy uses the
 same command shape:
 
 ```sh
-agentos create --kind action --name browser
+plaios create --kind action --name browser
 ```
 
 Supported plugin kinds are `input`, `output`, `action`, `agent`, `orchestrator`,
@@ -47,7 +47,7 @@ packages/example/
 ```
 
 The generated screen uses the shared shadcn/Tailwind configuration editor from
-`@agent-os/microfrontend` and can be replaced with capability-specific UI.
+`@plaios/microfrontend` and can be replaced with capability-specific UI.
 
 Publishing is intentionally not implemented yet. It will be added as a separate
 command once the registry backend exists.

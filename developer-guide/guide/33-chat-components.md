@@ -11,7 +11,7 @@ This is the part that feels like magic. Ask *"show me the garage cameras"* and t
 **1. The capability declares the component** with `uiComponents()`. This is what the model learns:
 
 ```ts src/ui-components.ts
-import type { UIComponentSpec } from "@agent-os/core/domain";
+import type { UIComponentSpec } from "@plaios/core/domain";
 
 export const WEB_SOURCES: UIComponentSpec = {
   name: "WebSources",
@@ -29,7 +29,7 @@ uiComponents(): readonly UIComponentSpec[] {
 **2. The web entry exports a renderer** with the same name, in `openui`:
 
 ```tsx web/action/index.tsx
-import type { OpenUIComponentModule } from "@agent-os/microfrontend";
+import type { OpenUIComponentModule } from "@plaios/microfrontend";
 import { WEB_SOURCES } from "../../src/ui-components.js";
 import { WebSources } from "./chat/web-sources.js";
 
@@ -42,7 +42,7 @@ Keeping the spec in one React-free file, imported by both halves, means the mode
 
 ## What the renderer receives
 
-```ts @agent-os/microfrontend
+```ts @plaios/microfrontend
 component: ComponentType<MicrofrontendProps<TData> & { args: TArgs; onOpen?(instanceId: string): void }>
 ```
 

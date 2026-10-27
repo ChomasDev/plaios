@@ -5,14 +5,14 @@ title: System 1 and System 2
 tagline: A fast mind for judgments, a slow mind for words. Use both.
 kinds: system1, system2
 ---
-Agent OS splits the model in two, like the psychology it is named after.
+PLAIOS splits the model in two, like the psychology it is named after.
 
 - **System 1** answers typed questions instantly: yes/no as a probability, a choice between labels, a score. It cannot write a sentence, and that is the point.
 - **System 2** is the generative model. It writes, reasons and calls tools, and it can answer the same typed questions, just slower.
 
 ## The contracts
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export type SystemQuestion =
   | { type: "noul"; instructions?: string; criteria?: { true?: unknown; false?: unknown } | null }
   | { type: "choice"; instructions?: string; criteria: Record<string, unknown> }

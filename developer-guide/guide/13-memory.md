@@ -9,7 +9,7 @@ Memory is the most connected box on the map. Replace it, and you change what the
 
 ## The contract
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export type MemoryKind = "working" | "semantic" | "episodic" | "procedural";
 
 export interface MemoryEntry<T = unknown> {

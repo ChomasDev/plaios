@@ -3,7 +3,7 @@ import type {
   CapabilityManifest,
   CapabilityResult,
   UIComponentSpec,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 import { GUIDE } from "./guide/index.js";
 
@@ -24,7 +24,7 @@ const manifest: CapabilityManifest = {
   id: "agent-os.developer-guide",
   version: "1.0.0",
   name: "read_developer_guide",
-  description: "Reads the Agent OS developer guide: how to build a plugin of any kind (input, output, action, memory, orchestrator, agent loop, discovery, system 1/2, database, environment), the manifest, config and secrets, the scoped database, the page and chat UI, and publishing. Call it with chapter null for the contents, then with a chapter id.",
+  description: "Reads the PLAIOS developer guide: how to build a plugin of any kind (input, output, action, memory, orchestrator, agent loop, discovery, system 1/2, database, environment), the manifest, config and secrets, the scoped database, the page and chat UI, and publishing. Call it with chapter null for the contents, then with a chapter id.",
   inputSchema: {
     type: "object",
     properties: {
@@ -35,13 +35,13 @@ const manifest: CapabilityManifest = {
   },
   tags: ["docs", "developer", "guide", "plugin", "package", "create", "build", "manifest", "capability", "how"],
   examples: [
-    { request: "How do I write a new input for Agent OS?", arguments: { chapter: "input" } },
+    { request: "How do I write a new input for PLAIOS?", arguments: { chapter: "input" } },
     { request: "What chapters does the developer guide have?", arguments: { chapter: null } },
   ],
   execution: { timeoutMs: 5_000, idempotent: true },
 };
 
-const DOCS = `Answers questions about building Agent OS plugins from the official developer guide.
+const DOCS = `Answers questions about building PLAIOS plugins from the official developer guide.
 
 **Use it** when the user wants to create, change or understand a plugin: a new input or output, a capability, memory, an orchestrator, how the manifest, config, database, page or chat components work, or how to publish. **Don't use it** for questions about the user's own data or devices.
 

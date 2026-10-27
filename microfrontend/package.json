@@ -1,7 +1,7 @@
 {
-  "name": "@agent-os/microfrontend",
+  "name": "@plaios/microfrontend",
   "version": "0.1.5",
-  "description": "Shared contracts and shadcn-based UI for Agent OS microfrontends",
+  "description": "Shared contracts and shadcn-based UI for PLAIOS microfrontends",
   "private": false,
   "type": "module",
   "sideEffects": [

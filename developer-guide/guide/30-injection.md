@@ -10,7 +10,7 @@ You never import another plugin. You **declare**, and the host **injects**. Ever
 
 | Key | You get it when | What it is |
 |---|---|---|
-| `cwd`, `workingDirectory` | always | the folder holding `agent-os.yaml` |
+| `cwd`, `workingDirectory` | always | the folder holding `plaios.yaml` |
 | `env` | an environment is installed | the composite environment, else the first one |
 | `memory` | a memory is installed | the first memory component |
 | `database` | a database is installed | a view scoped to your instance id (`action:foo` → `action-foo`) |
@@ -29,7 +29,7 @@ With several models, the host picks by your component config `system1Instance` /
 Spell it out, so a missing dependency is a type error and not a runtime surprise:
 
 ```ts src/action.ts
-import type { Database, Environment, Memory, System1, System2 } from "@agent-os/core/domain";
+import type { Database, Environment, Memory, System1, System2 } from "@plaios/core/domain";
 
 export interface HomeLightsOptions {
   env: Environment;

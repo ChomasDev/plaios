@@ -4,7 +4,7 @@ export type Kind = "env" | "system1" | "system2" | "discovery" | "database" | "m
 export interface DiagramNode { kind: Kind; x: number; y: number; w: number; h: number; wide?: boolean }
 export interface DiagramEdge { from: Kind; to: Kind; d: string; label: string; lx: number; ly: number; quiet?: boolean }
 
-// shortcut: same layout as the host's Settings diagram (app-dynamic architecture-model.ts), copied because plugins cannot import host code; move both into @agent-os/microfrontend when it is next published.
+// shortcut: same layout as the host's Settings diagram (app-dynamic architecture-model.ts), copied because plugins cannot import host code; move both into @plaios/microfrontend when it is next published.
 export const KIND_INFO: Record<Kind, { label: string; icon: LucideIcon; role: string }> = {
   input: { label: "Inputs", icon: Inbox, role: "Messages in" },
   memory: { label: "Memory", icon: BookMarked, role: "Remembers" },

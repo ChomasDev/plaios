@@ -1,4 +1,4 @@
-# Agent OS Core
+# PLAIOS Core
 
 Provider-neutral TypeScript contracts for an agent operating system.
 

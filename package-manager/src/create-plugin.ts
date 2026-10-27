@@ -48,7 +48,7 @@ export async function createPlugin(
   }
 
   const pascalName = toPascalCase(name);
-  const packageName = `@agent-os/${name}`;
+  const packageName = `@plaios/${name}`;
   const packagesDirectory = join(workspaceRoot, "packages");
   const packageDirectory = join(packagesDirectory, name);
 

@@ -1,6 +1,6 @@
 [submodule "packages"]
 	path = packages
-	url = https://github.com/ChomasDev/AgentOs-packages.git
+	url = https://github.com/ChomasDev/plaios-packages.git
 [submodule "app-dynamic"]
 	path = app-dynamic
-	url = https://github.com/ChomasDev/appdynamic.git
+	url = https://github.com/ChomasDev/plaios-app.git

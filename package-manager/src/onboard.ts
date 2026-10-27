@@ -9,7 +9,7 @@ import {
   writeDynamicAppConfig,
   type DynamicAppConfig,
   type DynamicComponentConfig,
-} from "@agent-os/app-dynamic";
+} from "@plaios/app-dynamic";
 
 interface Secret {
   env: string;
@@ -30,7 +30,7 @@ const component = (
   instanceId: string,
   config: Record<string, unknown> = {},
 ): DynamicComponentConfig => ({
-  package: `@agent-os/${name}`,
+  package: `@plaios/${name}`,
   version: "latest",
   interface: iface,
   instanceId,
@@ -188,7 +188,7 @@ export async function runOnboarding(configPath: string): Promise<boolean> {
   };
 
   try {
-    console.log("\nWelcome to Agent OS. Let's set up your agent.\n(The web chat at http://localhost:3100 is always included.)");
+    console.log("\nWelcome to PLAIOS. Let's set up your agent.\n(The web chat at http://localhost:3100 is always included.)");
     if (existsSync(configPath)) {
       const overwrite = await ask(`\n${configPath} already exists. Replace it? [y/N]`);
       if (!/^y(es)?$/i.test(overwrite)) return false;
@@ -224,7 +224,7 @@ export async function runOnboarding(configPath: string): Promise<boolean> {
     const current = existsSync(envPath) ? await readFile(envPath, "utf8") : "";
     await writeFile(envPath, mergeEnv(current, env), { encoding: "utf8", mode: 0o600 });
 
-    console.log(`\nSaved ${configPath} and ${envPath}. Change anything later from the control plane or with \`agentos init\`.\n`);
+    console.log(`\nSaved ${configPath} and ${envPath}. Change anything later from the control plane or with \`plaios init\`.\n`);
     return true;
   } finally {
     readline.close();

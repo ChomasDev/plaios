@@ -1,36 +1,27 @@
-# AgentOs-core
+# PLAIOS
 
-**An operating system for AI agents, where every part is a plugin.**
+**The Pluggable AI Operating System.** Say it "PLAY-os". An operating system for AI agents, where every part is a plugin.
 
-Most agent frameworks give you a brain and let you bolt tools onto it. Agent OS does the opposite: there is no brain. There is a host that loads packages, hands each one the others it asked for, and gets out of the way. The model is a package. The memory is a package. The router that picks tools is a package. Telegram, the web chat, the cron scheduler, Home Assistant: all packages, all on the same contracts.
+Most agent frameworks give you a brain and let you bolt tools onto it. PLAIOS does the opposite: there is no brain. There is a host that loads packages, hands each one the others it asked for, and gets out of the way. The model is a package. The memory is a package. The router that picks tools is a package. Telegram, the web chat, the cron scheduler, Home Assistant: all packages, all on the same contracts.
 
 This repo is where you start. It holds the contracts, the shared UI kit, the tooling, the docs, and (as git submodules) the runtime host and every published plugin, so one `git clone --recursive` gives you the whole system.
 
 ## Why it exists
 
-- **Swap anything.** Want a different model, memory or router? Write a class that satisfies the interface in `@agent-os/core/domain` and point `agent-os.yaml` at it. Nothing in the host changes.
+- **Swap anything.** Want a different model, memory or router? Write a class that satisfies the interface in `@plaios/core/domain` and point `plaios.yaml` at it. Nothing in the host changes.
 - **Wiring is declared, not coded.** A plugin's `agent-os.package.yaml` says what it is (`kind: action`) and what it needs (`required: [env]`). The host builds its constructor options. Plugins never import each other.
 - **Every part has a face.** Each interface ships a React microfrontend, so every component gets a settings page in the control plane, and capabilities can teach the model to draw live cards inside its answers.
 - **Install without restarting.** Plugins are ordinary npm packages. The host installs them from a registry at runtime, from config or from the built-in Store.
 
 ## How it works
 
-```text
-            agent-os.yaml (written by the `agentos` setup)
-                              │
-                              ▼
- ┌──────────────────── app-dynamic (the host) ─────────────────────┐
- │ 1. installs each package from the npm registry → .agent-os/      │
- │ 2. reads its agent-os.package.yaml, builds it in dependency order│
- │    env → ai → database → discovery → memory → agent → orchestr.  │
- │ 3. serves the control plane + each package's microfrontend :3100 │
- └──────────────────────────────────────────────────────────────────┘
+<p align="center">
+  <img src="docs/assets/architecture.svg" alt="Architecture: channels and the SDK contracts on top, the host and kernel with its pluggable slots in the middle, external resources at the bottom" width="100%">
+</p>
 
- One message:
- input ──► memory adds context ──► orchestrator picks tools + output
-       ──► agent loop calls the model and actions ──► output delivers
-       ──► memory keeps the answer
-```
+- **Application layer.** Channels (web chat, Telegram, voice, an OpenAI-compatible API, cron) are plugins of kind `input`/`output`. Every plugin is built against the typed contracts in `core`.
+- **Kernel layer.** The host (`app-dynamic`) installs packages, reads their manifests and injects what each one `required`. The runtime pipeline moves one message through `input ▸ memory ▸ orchestrate ▸ agent loop ▸ output ▸ remember`, and every slot below it is a swappable plugin.
+- **Resource layer.** The npm registry plugins come from, the isolated runtime folder, SQLite, `.env` secrets, model APIs and the outside world.
 
 Inputs never know outputs exist, the agent loop never touches memory directly: every arrow goes through a contract in `core/`. The full walkthrough is in the developer guide, chapter [One message, start to finish](developer-guide/guide/02-journey.md).
 
@@ -38,31 +29,31 @@ Inputs never know outputs exist, the agent loop never touches memory directly: e
 
 | Path | What it is |
 | --- | --- |
-| [`core/`](core) | `@agent-os/core`: provider-neutral TypeScript contracts (input, output, capability, memory, orchestrator, agent, AI, database, env, discovery). No runtime code. |
-| [`microfrontend/`](microfrontend) | `@agent-os/microfrontend`: shared React contracts, config editor, theme and shadcn-style components for plugin pages. |
-| [`package-manager/`](package-manager) | `@agent-os/package-manager`: the `agentos` CLI: first-run setup, `agentos create`, `agentos start`. |
+| [`core/`](core) | `@plaios/core`: provider-neutral TypeScript contracts (input, output, capability, memory, orchestrator, agent, AI, database, env, discovery). No runtime code. |
+| [`microfrontend/`](microfrontend) | `@plaios/microfrontend`: shared React contracts, config editor, theme and shadcn-style components for plugin pages. |
+| [`package-manager/`](package-manager) | `@plaios/package-manager`: the `plaios` CLI: first-run setup, `plaios create`, `plaios start`. |
 | [`developer-guide/`](developer-guide) | The developer guide, as markdown in [`developer-guide/guide`](developer-guide/guide) and as an installable plugin (a page in the UI plus a `read_developer_guide` tool for the agent). |
-| [`app-dynamic/`](https://github.com/ChomasDev/appdynamic) | Submodule. `@agent-os/app-dynamic`: the runtime host and control plane. |
-| [`packages/`](https://github.com/ChomasDev/AgentOs-packages) | Submodule. Every plugin: Telegram, Codex, SQLite, memory graph, agent loop, orchestrators, actions. |
-| [`examples/agent-os.full.yaml`](examples/agent-os.full.yaml) | A full reference component graph. Your own `agent-os.yaml` is generated by `agentos` on first run and not committed. |
+| [`app-dynamic/`](https://github.com/ChomasDev/plaios-app) | Submodule. `@plaios/app-dynamic`: the runtime host and control plane. |
+| [`packages/`](https://github.com/ChomasDev/plaios-packages) | Submodule. Every plugin: Telegram, Codex, SQLite, memory graph, agent loop, orchestrators, actions. |
+| [`examples/plaios.full.yaml`](examples/plaios.full.yaml) | A full reference component graph. Your own `plaios.yaml` is generated by `plaios` on first run and not committed. |
 
 Everything is one pnpm workspace, so the submodules build against the local `core` and `microfrontend` (`workspace:*`).
 
 ## Quick start
 
 ```bash
-git clone --recursive https://github.com/ChomasDev/AgentOs-core.git
-cd AgentOs-core
+git clone --recursive https://github.com/ChomasDev/plaios.git
+cd plaios
 pnpm install && pnpm build
-pnpm agentos        # first run: pick the AI, channels and tools in the terminal, then it starts
+pnpm plaios        # first run: pick the AI, channels and tools in the terminal, then it starts
 ```
 
-The plugins are installed from an npm registry, so the first time you also need a local one with the plugins published. **[How to run Agent OS](docs/how-to-run.md)** covers it step by step.
+The plugins are installed from an npm registry, so the first time you also need a local one with the plugins published. **[How to run PLAIOS](docs/how-to-run.md)** covers it step by step.
 
 ## Build your own plugin
 
 ```bash
-pnpm agentos create action weather   # scaffolds packages/weather
+pnpm plaios create action weather   # scaffolds packages/weather
 ```
 
 Then read the [quickstart chapter](developer-guide/guide/04-quickstart.md). Chapters by topic:
@@ -92,7 +83,7 @@ git add packages && git commit -m "Bump packages"
 | `pnpm build` | Build every package in the workspace |
 | `pnpm test` | Run every package's tests |
 | `pnpm typecheck` | Type-check everything |
-| `pnpm agentos create` | Scaffold a plugin into `packages/` |
-| `pnpm agentos` | First run: terminal setup. Then: install the configured plugins and start the host on :3100 |
-| `pnpm agentos init` | Redo the setup (AI, channels, tools, keys) |
+| `pnpm plaios create` | Scaffold a plugin into `packages/` |
+| `pnpm plaios` | First run: terminal setup. Then: install the configured plugins and start the host on :3100 |
+| `pnpm plaios init` | Redo the setup (AI, channels, tools, keys) |
 | `pnpm landing:dev` | Run the app-dynamic landing page |

@@ -11,10 +11,10 @@ Let's build a real capability: the agent will be able to tell you the weather.
 From the repository root:
 
 ```bash terminal
-agentos create action weather
+plaios create action weather
 ```
 
-You get `packages/weather` with a manifest, a class named `WeatherCapability`, a page and a stylesheet. Valid kinds are `input`, `output`, `action`, `agent`, `orchestrator`, `discovery`, `database`, `memory`, `system1`, `system2`, `env`. You can scaffold several at once: `agentos create --kind input,output telegram-clone`.
+You get `packages/weather` with a manifest, a class named `WeatherCapability`, a page and a stylesheet. Valid kinds are `input`, `output`, `action`, `agent`, `orchestrator`, `discovery`, `database`, `memory`, `system1`, `system2`, `env`. You can scaffold several at once: `plaios create --kind input,output telegram-clone`.
 
 ## 2. Give it a real job
 
@@ -22,7 +22,7 @@ You get `packages/weather` with a manifest, a class named `WeatherCapability`, a
 import type {
   Capability, CapabilityExecutionContext, CapabilityManifest, CapabilityResult,
   Environment, UIComponentSpec,
-} from "@agent-os/core/domain";
+} from "@plaios/core/domain";
 
 export interface WeatherInput { city: string; days: number | null }
 export interface WeatherOutput { summary: string; days: Array<{ date: string; high: number; low: number }> }
@@ -80,7 +80,7 @@ pnpm publish --registry http://<your-registry>:4873
 
 ## 4. Install it
 
-Open **Store**, find `weather`, press **Install**. The host installs the package, checks that its microfrontend resolves, adds a component to `agent-os.yaml` with your config defaults, and reloads.
+Open **Store**, find `weather`, press **Install**. The host installs the package, checks that its microfrontend resolves, adds a component to `plaios.yaml` with your config defaults, and reloads.
 
 Set `WEATHER_API_KEY` in `.env` (or on the component page), and ask the chat: *"Will it rain in Treviso tomorrow?"*
 

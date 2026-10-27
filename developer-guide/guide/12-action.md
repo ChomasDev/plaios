@@ -9,7 +9,7 @@ A capability is a typed function the model can call. Home Assistant, SSH, web se
 
 ## The contract
 
-```ts @agent-os/core/domain
+```ts @plaios/core/domain
 export interface Capability<TInput = unknown, TOutput = unknown> {
   readonly manifest: CapabilityManifest;
   initialize?(): Promise<void>;

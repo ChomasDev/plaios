@@ -10,12 +10,6 @@ importers:
 
   app-dynamic:
     dependencies:
-      '@agent-os/core':
-        specifier: workspace:*
-        version: link:../core
-      '@agent-os/microfrontend':
-        specifier: workspace:*
-        version: link:../microfrontend
       '@fontsource-variable/noto-sans':
         specifier: ^5.2.8
         version: 5.3.0
@@ -34,6 +28,12 @@ importers:
       '@openuidev/react-ui':
         specifier: 0.18.1
         version: 0.18.1(@openuidev/react-headless@0.18.1(react@19.2.4)(zustand@4.5.7(@types/react@19.2.18)(react@19.2.4)))(@openuidev/react-lang@1.0.1(@modelcontextprotocol/sdk@1.32.1(zod@4.6.7))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.6.7))(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.6.7)(zustand@4.5.7(@types/react@19.2.18)(react@19.2.4))
+      '@plaios/core':
+        specifier: workspace:*
+        version: link:../core
+      '@plaios/microfrontend':
+        specifier: workspace:*
+        version: link:../microfrontend
       '@tailwindcss/vite':
         specifier: ^4.1.14
         version: 4.3.3(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.12)(yaml@2.9.0))
@@ -101,10 +101,10 @@ importers:
 
   developer-guide:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../microfrontend
       lucide-react:
@@ -157,7 +157,7 @@ importers:
 
   package-manager:
     dependencies:
-      '@agent-os/app-dynamic':
+      '@plaios/app-dynamic':
         specifier: workspace:*
         version: link:../app-dynamic
     devDependencies:
@@ -170,10 +170,10 @@ importers:
 
   packages/action-cli:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:
@@ -192,18 +192,18 @@ importers:
 
   packages/action-gods-eye-view:
     dependencies:
-      '@agent-os/action-ssh':
-        specifier: workspace:*
-        version: link:../action-ssh
-      '@agent-os/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@agent-os/microfrontend':
-        specifier: workspace:*
-        version: link:../../microfrontend
       '@mapbox/vector-tile':
         specifier: ^3.0.0
         version: 3.0.0
+      '@plaios/action-ssh':
+        specifier: workspace:*
+        version: link:../action-ssh
+      '@plaios/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@plaios/microfrontend':
+        specifier: workspace:*
+        version: link:../../microfrontend
       cesium:
         specifier: ^1.124.0
         version: 1.145.0
@@ -262,17 +262,17 @@ importers:
 
   packages/action-home-assistant:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
-      '@agent-os/systems':
+      '@plaios/systems':
         specifier: workspace:*
         version: link:../systems
     devDependencies:
-      '@agent-os/system1-jev':
+      '@plaios/system1-jev':
         specifier: workspace:*
         version: link:../system1-jev
       '@types/node':
@@ -290,10 +290,10 @@ importers:
 
   packages/action-memory-retrieval:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:
@@ -312,15 +312,15 @@ importers:
 
   packages/action-perplexity-search:
     dependencies:
-      '@agent-os/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@agent-os/microfrontend':
-        specifier: workspace:*
-        version: link:../../microfrontend
       '@perplexity-ai/perplexity_ai':
         specifier: ^0.36.0
         version: 0.36.0
+      '@plaios/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@plaios/microfrontend':
+        specifier: workspace:*
+        version: link:../../microfrontend
     devDependencies:
       '@types/node':
         specifier: 24.13.3
@@ -337,17 +337,17 @@ importers:
 
   packages/action-ssh:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
-      '@agent-os/systems':
+      '@plaios/systems':
         specifier: workspace:*
         version: link:../systems
     devDependencies:
-      '@agent-os/system1-jev':
+      '@plaios/system1-jev':
         specifier: workspace:*
         version: link:../system1-jev
       '@types/node':
@@ -365,10 +365,10 @@ importers:
 
   packages/action-tiktok-series:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:
@@ -387,10 +387,10 @@ importers:
 
   packages/agent-loop:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:
@@ -409,7 +409,7 @@ importers:
 
   packages/cli:
     dependencies:
-      '@agent-os/package-manager':
+      '@plaios/package-manager':
         specifier: workspace:*
         version: link:../../package-manager
     devDependencies:
@@ -422,18 +422,18 @@ importers:
 
   packages/codex:
     dependencies:
-      '@agent-os/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@agent-os/microfrontend':
-        specifier: workspace:*
-        version: link:../../microfrontend
-      '@agent-os/systems':
-        specifier: workspace:*
-        version: link:../systems
       '@openai/codex-sdk':
         specifier: ^0.163.0
         version: 0.163.0
+      '@plaios/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@plaios/microfrontend':
+        specifier: workspace:*
+        version: link:../../microfrontend
+      '@plaios/systems':
+        specifier: workspace:*
+        version: link:../systems
     devDependencies:
       '@types/node':
         specifier: 24.13.3
@@ -450,17 +450,17 @@ importers:
 
   packages/cronjob:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
       node-cron:
         specifier: ^4.2.1
         version: 4.6.0
     devDependencies:
-      '@agent-os/sqlite':
+      '@plaios/sqlite':
         specifier: workspace:*
         version: link:../sqlite
       '@types/node':
@@ -478,10 +478,10 @@ importers:
 
   packages/discovery-memory:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:
@@ -500,10 +500,10 @@ importers:
 
   packages/env-node:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:
@@ -522,17 +522,17 @@ importers:
 
   packages/jev-orchestrator:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
-      '@agent-os/systems':
+      '@plaios/systems':
         specifier: workspace:*
         version: link:../systems
     devDependencies:
-      '@agent-os/system1-jev':
+      '@plaios/system1-jev':
         specifier: workspace:*
         version: link:../system1-jev
       '@types/node':
@@ -550,10 +550,10 @@ importers:
 
   packages/memory-graph:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
       graphology:
@@ -569,7 +569,7 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3(graphology-types@0.24.8)
     devDependencies:
-      '@agent-os/sqlite':
+      '@plaios/sqlite':
         specifier: workspace:*
         version: link:../sqlite
       '@types/node':
@@ -590,10 +590,10 @@ importers:
 
   packages/openrouter-api:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
       ws:
@@ -618,10 +618,10 @@ importers:
 
   packages/orchestrator-default:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:
@@ -640,10 +640,10 @@ importers:
 
   packages/sqlite:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:
@@ -662,10 +662,10 @@ importers:
 
   packages/system1-jev:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
       '@typesafe-ai/sdk':
@@ -687,7 +687,7 @@ importers:
 
   packages/systems:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
     devDependencies:
@@ -700,10 +700,10 @@ importers:
 
   packages/telegram:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:
@@ -722,10 +722,10 @@ importers:
 
   packages/voice-live:
     dependencies:
-      '@agent-os/core':
+      '@plaios/core':
         specifier: workspace:*
         version: link:../../core
-      '@agent-os/microfrontend':
+      '@plaios/microfrontend':
         specifier: workspace:*
         version: link:../../microfrontend
     devDependencies:

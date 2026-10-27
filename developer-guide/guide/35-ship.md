@@ -4,7 +4,7 @@ part: Superpowers
 title: Build, publish, install
 tagline: From your laptop to the Store to a running agent.
 ---
-Agent OS installs plugins from an npm registry, a private Verdaccio by default. Publishing is just npm publishing.
+PLAIOS installs plugins from an npm registry, a private Verdaccio by default. Publishing is just npm publishing.
 
 ## 1. Build
 
@@ -25,7 +25,7 @@ Bump `version` in **both** `package.json` and `agent-os.package.yaml`. Breaking 
 pnpm publish --registry http://<your-registry>:4873
 ```
 
-`workspace:*` dependencies are rewritten to the exact versions in your workspace, so publish `@agent-os/core` first if you changed it.
+`workspace:*` dependencies are rewritten to the exact versions in your workspace, so publish `@plaios/core` first if you changed it.
 
 ## 4. Install
 
@@ -33,14 +33,14 @@ From the **Store**, press **Install**. The host then:
 
 1. runs `pnpm add` for your package into `.agent-os/runtime`
 2. reads your manifest and checks every interface's page resolves (or uninstalls and tells you why)
-3. adds one component per interface to `agent-os.yaml`, with id `<kind>:<package-id>` and your config defaults (interfaces with `startup.when: manual` are skipped)
+3. adds one component per interface to `plaios.yaml`, with id `<kind>:<package-id>` and your config defaults (interfaces with `startup.when: manual` are skipped)
 4. reloads the runtime
 
 Or pin it by hand:
 
-```yaml agent-os.yaml
+```yaml plaios.yaml
 components:
-  - package: "@agent-os/weather"
+  - package: "@plaios/weather"
     version: 0.1.0
     interface: weather.action
     instanceId: action:weather
@@ -48,7 +48,7 @@ components:
       days: 3
 ```
 
-On boot the host installs any pinned version that is missing, so the same `agent-os.yaml` reproduces the same agent on any machine.
+On boot the host installs any pinned version that is missing, so the same `plaios.yaml` reproduces the same agent on any machine.
 
 ## Updating
 
