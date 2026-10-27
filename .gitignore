@@ -7,3 +7,4 @@ dist/
 
 .pnpm-store/
 artifacts/
+agent-os.yaml

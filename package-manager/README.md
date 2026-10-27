@@ -2,6 +2,13 @@
 
 CLI and programmatic API for creating Agent OS plugin packages.
 
+## Run Agent OS
+
+```sh
+pnpm agentos         # first run asks for the AI, channels and tools, writes agent-os.yaml + .env, then starts
+pnpm agentos init    # redo the setup
+```
+
 ## Create a plugin
 
 From the Agent OS workspace root:

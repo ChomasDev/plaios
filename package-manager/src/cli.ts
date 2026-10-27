@@ -5,9 +5,11 @@ import { realpathSync } from "node:fs";
 import { stdin, stdout } from "node:process";
 import { relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { runStart } from "@agent-os/app-dynamic";
+import { existsSync } from "node:fs";
+import { parseStartArguments, resolveConfigPath, runStart } from "@agent-os/app-dynamic";
 
 import { createPlugin } from "./create-plugin.js";
+import { runOnboarding } from "./onboard.js";
 import {
   getPluginKindConfig,
   isPluginKind,
@@ -29,10 +31,13 @@ function printMainHelp(): void {
   console.log(`Agent OS package manager
 
 Usage:
+  agentos                 Set up on first run, then start
+  agentos init            Run the setup again
   agentos create [kinds] [name] [options]
   agentos start [options]
 
 Commands:
+  init      Choose the AI, channels and tools; writes agent-os.yaml and .env
   create    Scaffold a new plugin package
   start     Install configured packages and start the dynamic control plane
 
@@ -246,8 +251,15 @@ export async function main(
 ): Promise<void> {
   const [command, ...commandArguments] = argv;
 
-  if (!command || command === "--help" || command === "-h") {
+  if (command === "--help" || command === "-h") {
     printMainHelp();
+    return;
+  }
+
+  if (command === "init") {
+    if (!stdin.isTTY || !stdout.isTTY) throw new Error("agentos init needs a terminal.");
+    const configPath = resolveConfigPath(currentDirectory, parseStartArguments(commandArguments).configPath);
+    if (await runOnboarding(configPath)) console.log("Run `agentos` to start.");
     return;
   }
 
@@ -256,8 +268,15 @@ export async function main(
     return;
   }
 
-  if (command === "start") {
-    await runStart(commandArguments, currentDirectory);
+  if (!command || command === "start" || command.startsWith("-")) {
+    const startArguments = command === "start" ? commandArguments : argv;
+    const options = parseStartArguments(startArguments);
+    const configPath = resolveConfigPath(currentDirectory, options.configPath);
+    // Without a terminal, start falls back to app-dynamic's starter config.
+    if (!options.help && !existsSync(configPath) && stdin.isTTY && stdout.isTTY) {
+      if (!(await runOnboarding(configPath))) return;
+    }
+    await runStart(startArguments, currentDirectory);
     return;
   }
 

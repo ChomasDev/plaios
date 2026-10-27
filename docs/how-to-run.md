@@ -2,7 +2,7 @@
 
 From an empty machine to chatting with your agent at `http://localhost:3100`.
 
-The host (`app-dynamic`) installs plugins **from an npm registry**, not from the workspace. So running Agent OS is: build the workspace, publish the plugins to a local registry, point `agent-os.yaml` at it, start.
+The host (`app-dynamic`) installs plugins **from an npm registry**, not from the workspace. So running Agent OS is: build the workspace, publish the plugins to a local registry, then `pnpm agentos` and answer a few questions.
 
 ## 0. Prerequisites
 
@@ -59,111 +59,54 @@ pnpm publishes in dependency order (`core` and `microfrontend` first) and rewrit
 
 > If `pnpm -r publish` hangs, publish one package at a time: `cd packages/telegram && pnpm publish --registry http://localhost:4873 --no-git-checks`. Start with `core`, `microfrontend`, `packages/systems`, then the rest.
 
-## 4. Configure
-
-Secrets live in `.env`, never in `agent-os.yaml`:
+## 4. Start
 
 ```bash
-cp .env.example .env
+pnpm agentos
 ```
 
-Fill only what the plugins you use need. For this tutorial:
+The first time, there is no `agent-os.yaml`, so a short setup runs in the terminal:
 
-```dotenv
-CODEX_API_KEY=sk-...        # leave empty if you ran `codex login`
-CODEX_MODEL=gpt-5.6-sol
+```text
+Welcome to Agent OS. Let's set up your agent.
+(The web chat at http://localhost:3100 is always included.)
+
+Which AI should power the agent?
+  1. Codex, signed in with `codex login` (ChatGPT account)
+  2. Codex, with an OpenAI API key
+Choose [1]:
+
+Where else do you want to talk to it?
+  1. Telegram bot
+  2. OpenAI-compatible HTTP API (use it from any OpenAI client)
+  3. Live voice (OpenAI Realtime)
+Numbers, comma-separated (empty for none): 1
+
+Which tools should it have?
+  1. Web search (Perplexity)
+  ...
 ```
 
-`agent-os.yaml` is the component graph: which packages to install and how each instance is configured. The one in the repo is the full reference setup (Telegram, Home Assistant, God's Eye View...). For a first run, replace it with this minimal graph, which gives you the web chat with memory and tools:
+It asks only for the keys your choices need (typed keys are hidden), writes `agent-os.yaml` (the component graph) and `.env` (the secrets, merged into any existing one), then starts. Every later `pnpm agentos` starts straight away; run `pnpm agentos init` to redo the setup.
 
-```yaml
-schemaVersion: 1
-registry: http://localhost:4873
-server:
-  host: 0.0.0.0
-  port: 3100
-components:
-  - package: "@agent-os/env-node"
-    version: latest
-    interface: env-node.process
-    instanceId: env:env-node
-    config: {}
-  - package: "@agent-os/env-node"
-    version: latest
-    interface: env-node.dotenv
-    instanceId: env:env-node:2
-    config:
-      filePath: .env
-      exampleFilePath: .env.example
-      required: false
-  - package: "@agent-os/env-node"
-    version: latest
-    interface: env-node.composite
-    instanceId: env:env-node:3
-    config: {}
-  - package: "@agent-os/sqlite"
-    version: latest
-    interface: sqlite.database
-    instanceId: database:main
-    config:
-      databasePath: .agent-os/data/agent-os.sqlite
-  - package: "@agent-os/codex"
-    version: latest
-    interface: codex.ai
-    instanceId: ai:codex
-    config:
-      skipGitRepoCheck: true
-      sandboxMode: read-only
-      approvalPolicy: never
-  - package: "@agent-os/discovery-memory"
-    version: latest
-    interface: discovery-memory.discovery
-    instanceId: discovery:discovery-memory
-    config: {}
-  - package: "@agent-os/memory-graph"
-    version: latest
-    interface: memory-graph.memory
-    instanceId: memory:memory-graph
-    config: {}
-  - package: "@agent-os/agent-loop"
-    version: latest
-    interface: agent-loop.agent
-    instanceId: agent:agent-loop
-    config: {}
-  - package: "@agent-os/orchestrator-default"
-    version: latest
-    interface: orchestrator-default.orchestrator
-    instanceId: orchestrator:orchestrator-default
-    config: {}
-```
+The host then:
 
-Keep the original with `git stash` or `cp agent-os.yaml agent-os.full.yaml` first if you want to go back to it.
-
-## 5. Start
-
-```bash
-pnpm agentos start
-```
-
-The host:
-
-1. reads `agent-os.yaml`,
-2. installs every package into `.agent-os/runtime` from the registry,
-3. builds the components in dependency order (env, AI, database, discovery, memory, agent, orchestrator),
-4. serves the control plane on **http://localhost:3100**.
+1. installs every package into `.agent-os/runtime` from the registry (it uses `npx pnpm` if pnpm is not installed),
+2. builds the components in dependency order (env, AI, database, discovery, memory, agent, orchestrator),
+3. serves the control plane on **http://localhost:3100**.
 
 Open it, go to the chat and ask something. A component that fails (for example, a missing secret) is shown in red on its own page; the rest keep running.
 
 Useful flags:
 
 ```text
-pnpm agentos start --config ./agent-os.full.yaml   # another graph
-                   --registry http://host:4873      # override the registry
-                   --port 3200
-                   --no-install                     # skip installing, use what is in .agent-os/runtime
+pnpm agentos --config ./examples/agent-os.full.yaml   # another graph (the full reference setup)
+             --registry http://host:4873              # override the registry
+             --port 3200
+             --no-install                             # skip installing, use what is in .agent-os/runtime
 ```
 
-## 6. Add more plugins
+## 5. Add more plugins
 
 From the UI: open **Store**, pick a package, press **Install**. The host installs it, adds it to `agent-os.yaml` with its defaults, and loads it without a restart.
 
@@ -177,7 +120,7 @@ Some popular ones and the secrets they read from `.env`:
 | `@agent-os/cronjob` | nothing; schedules prompts |
 | `@agent-os/voice-live` | `OPENAI_API_KEY`; the mic works on `localhost` or HTTPS only |
 
-## 7. Write your own
+## 6. Write your own
 
 ```bash
 pnpm agentos create action weather    # → packages/weather
