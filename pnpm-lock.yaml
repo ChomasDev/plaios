@@ -8,8 +8,118 @@ importers:
 
   .: {}
 
+  app-dynamic:
+    dependencies:
+      '@agent-os/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agent-os/microfrontend':
+        specifier: workspace:*
+        version: link:../microfrontend
+      '@fontsource-variable/noto-sans':
+        specifier: ^5.2.8
+        version: 5.3.0
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.32.1
+        version: 1.32.1(zod@4.6.7)
+      '@openuidev/lang-core':
+        specifier: 1.0.1
+        version: 1.0.1(@modelcontextprotocol/sdk@1.32.1(zod@4.6.7))(zod@4.6.7)
+      '@openuidev/react-headless':
+        specifier: 0.18.1
+        version: 0.18.1(react@19.2.4)(zustand@4.5.7(@types/react@19.2.18)(react@19.2.4))
+      '@openuidev/react-lang':
+        specifier: 1.0.1
+        version: 1.0.1(@modelcontextprotocol/sdk@1.32.1(zod@4.6.7))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.6.7)
+      '@openuidev/react-ui':
+        specifier: 0.18.1
+        version: 0.18.1(@openuidev/react-headless@0.18.1(react@19.2.4)(zustand@4.5.7(@types/react@19.2.18)(react@19.2.4)))(@openuidev/react-lang@1.0.1(@modelcontextprotocol/sdk@1.32.1(zod@4.6.7))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.6.7))(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.6.7)(zustand@4.5.7(@types/react@19.2.18)(react@19.2.4))
+      '@tailwindcss/vite':
+        specifier: ^4.1.14
+        version: 4.3.3(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.12)(yaml@2.9.0))
+      '@tanstack/react-query':
+        specifier: ^5.90.2
+        version: 5.102.5(react@19.2.4)
+      '@vitejs/plugin-react':
+        specifier: ^5.0.4
+        version: 5.2.0(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.12)(yaml@2.9.0))
+      framer-motion:
+        specifier: ^14.6.0
+        version: 14.6.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      lucide-react:
+        specifier: ^0.544.0
+        version: 0.544.0(react@19.2.4)
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+      shadcn:
+        specifier: ^4.16.2
+        version: 4.19.0(typescript@7.0.2)
+      tailwindcss:
+        specifier: ^4.1.14
+        version: 4.3.3
+      tw-animate-css:
+        specifier: ^1.4.0
+        version: 1.4.0
+      vite:
+        specifier: ^7.1.7
+        version: 7.3.6(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.12)(yaml@2.9.0)
+      yaml:
+        specifier: ^2.8.1
+        version: 2.9.0
+      zod:
+        specifier: ^4.6.7
+        version: 4.6.7
+      zustand:
+        specifier: ^4.5.7
+        version: 4.5.7(@types/react@19.2.18)(react@19.2.4)
+    devDependencies:
+      '@types/node':
+        specifier: 24.13.3
+        version: 24.13.3
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19.0.0
+        version: 19.2.5(@types/react@19.2.18)
+      tsx:
+        specifier: ^4.20.5
+        version: 4.23.12
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+
   core:
     devDependencies:
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+
+  developer-guide:
+    dependencies:
+      '@agent-os/core':
+        specifier: workspace:*
+        version: link:../core
+      '@agent-os/microfrontend':
+        specifier: workspace:*
+        version: link:../microfrontend
+      lucide-react:
+        specifier: ^0.544.0
+        version: 0.544.0(react@19.2.4)
+    devDependencies:
+      '@types/node':
+        specifier: 24.13.3
+        version: 24.13.3
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.18
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
       typescript:
         specifier: 7.0.2
         version: 7.0.2
@@ -49,7 +159,7 @@ importers:
     dependencies:
       '@agent-os/app-dynamic':
         specifier: workspace:*
-        version: link:../packages/app-dynamic
+        version: link:../app-dynamic
     devDependencies:
       '@types/node':
         specifier: 24.13.3
@@ -297,91 +407,6 @@ importers:
         specifier: 7.0.2
         version: 7.0.2
 
-  packages/app-dynamic:
-    dependencies:
-      '@agent-os/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@agent-os/microfrontend':
-        specifier: workspace:*
-        version: link:../../microfrontend
-      '@fontsource-variable/noto-sans':
-        specifier: ^5.2.8
-        version: 5.3.0
-      '@modelcontextprotocol/sdk':
-        specifier: ^1.32.1
-        version: 1.32.1(zod@4.6.7)
-      '@openuidev/lang-core':
-        specifier: 1.0.1
-        version: 1.0.1(@modelcontextprotocol/sdk@1.32.1(zod@4.6.7))(zod@4.6.7)
-      '@openuidev/react-headless':
-        specifier: 0.18.1
-        version: 0.18.1(react@19.2.4)(zustand@4.5.7(@types/react@19.2.18)(react@19.2.4))
-      '@openuidev/react-lang':
-        specifier: 1.0.1
-        version: 1.0.1(@modelcontextprotocol/sdk@1.32.1(zod@4.6.7))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.6.7)
-      '@openuidev/react-ui':
-        specifier: 0.18.1
-        version: 0.18.1(@openuidev/react-headless@0.18.1(react@19.2.4)(zustand@4.5.7(@types/react@19.2.18)(react@19.2.4)))(@openuidev/react-lang@1.0.1(@modelcontextprotocol/sdk@1.32.1(zod@4.6.7))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.6.7))(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.6.7)(zustand@4.5.7(@types/react@19.2.18)(react@19.2.4))
-      '@tailwindcss/vite':
-        specifier: ^4.1.14
-        version: 4.3.3(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.12)(yaml@2.9.0))
-      '@tanstack/react-query':
-        specifier: ^5.90.2
-        version: 5.102.5(react@19.2.4)
-      '@vitejs/plugin-react':
-        specifier: ^5.0.4
-        version: 5.2.0(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.12)(yaml@2.9.0))
-      framer-motion:
-        specifier: ^14.6.0
-        version: 14.6.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      lucide-react:
-        specifier: ^0.544.0
-        version: 0.544.0(react@19.2.4)
-      react:
-        specifier: 19.2.4
-        version: 19.2.4
-      react-dom:
-        specifier: 19.2.4
-        version: 19.2.4(react@19.2.4)
-      shadcn:
-        specifier: ^4.16.2
-        version: 4.19.0(typescript@7.0.2)
-      tailwindcss:
-        specifier: ^4.1.14
-        version: 4.3.3
-      tw-animate-css:
-        specifier: ^1.4.0
-        version: 1.4.0
-      vite:
-        specifier: ^7.1.7
-        version: 7.3.6(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.12)(yaml@2.9.0)
-      yaml:
-        specifier: ^2.8.1
-        version: 2.9.0
-      zod:
-        specifier: ^4.6.7
-        version: 4.6.7
-      zustand:
-        specifier: ^4.5.7
-        version: 4.5.7(@types/react@19.2.18)(react@19.2.4)
-    devDependencies:
-      '@types/node':
-        specifier: 24.13.3
-        version: 24.13.3
-      '@types/react':
-        specifier: ^19.0.0
-        version: 19.2.18
-      '@types/react-dom':
-        specifier: ^19.0.0
-        version: 19.2.5(@types/react@19.2.18)
-      tsx:
-        specifier: ^4.20.5
-        version: 4.23.12
-      typescript:
-        specifier: 7.0.2
-        version: 7.0.2
-
   packages/cli:
     dependencies:
       '@agent-os/package-manager':
@@ -438,31 +463,6 @@ importers:
       '@agent-os/sqlite':
         specifier: workspace:*
         version: link:../sqlite
-      '@types/node':
-        specifier: 24.13.3
-        version: 24.13.3
-      '@types/react':
-        specifier: ^19.0.0
-        version: 19.2.18
-      react:
-        specifier: 19.2.4
-        version: 19.2.4
-      typescript:
-        specifier: 7.0.2
-        version: 7.0.2
-
-  packages/developer-guide:
-    dependencies:
-      '@agent-os/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@agent-os/microfrontend':
-        specifier: workspace:*
-        version: link:../../microfrontend
-      lucide-react:
-        specifier: ^0.544.0
-        version: 0.544.0(react@19.2.4)
-    devDependencies:
       '@types/node':
         specifier: 24.13.3
         version: 24.13.3

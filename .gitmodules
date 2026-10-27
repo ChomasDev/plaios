@@ -1,0 +1,6 @@
+[submodule "packages"]
+	path = packages
+	url = https://github.com/ChomasDev/AgentOs-packages.git
+[submodule "app-dynamic"]
+	path = app-dynamic
+	url = https://github.com/ChomasDev/appdynamic.git

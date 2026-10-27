@@ -7,5 +7,3 @@ dist/
 
 .pnpm-store/
 artifacts/
-packages/action-gods-eye-view/vendor/gods-eye-view/private/
-packages/action-gods-eye-view/vendor/gods-eye-view/docs/media/

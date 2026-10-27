@@ -1,5 +1,5 @@
 {
-  "name": "agent-os-v2",
+  "name": "agent-os-core",
   "version": "0.1.0",
   "private": true,
   "scripts": {

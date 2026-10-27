@@ -2,5 +2,7 @@ packages:
   - "core"
   - "microfrontend"
   - "package-manager"
+  - "developer-guide"
+  - "app-dynamic"
   - "packages/*"
   - "packages/*/*"
