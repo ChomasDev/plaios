@@ -2,6 +2,10 @@ node_modules/
 dist/
 .DS_Store
 .agent-os/
+.gev-cache/
 .env
 
 .pnpm-store/
+artifacts/
+packages/action-gods-eye-view/vendor/gods-eye-view/private/
+packages/action-gods-eye-view/vendor/gods-eye-view/docs/media/

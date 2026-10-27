@@ -7,7 +7,6 @@ export interface TemplateValues {
   readonly snakeName: string;
   readonly className: string;
   readonly packageName: string;
-  readonly packageId: string;
 }
 
 export function renderPackageJson(values: TemplateValues): string {
@@ -81,14 +80,10 @@ export function renderTsConfig(): string {
 }
 
 export function renderManifest(interfaces: readonly TemplateValues[]): string {
-  const plugin = interfaces[0];
-  if (!plugin) {
-    throw new Error("At least one plugin interface is required");
-  }
-
+  const plugin = interfaces[0]!;
   const renderedInterfaces = interfaces
     .map(
-      (item) => `  - id: ${item.packageId}.${item.kind}
+      (item) => `  - id: ${item.name}.${item.kind}
     kind: ${item.kind}
     name: ${item.className}
     entry: .
@@ -97,15 +92,12 @@ export function renderManifest(interfaces: readonly TemplateValues[]): string {
     description: TODO describe this interface
     permissions: []
     required: []
-    web:
-      entry: ./web/${item.kind}
-      export: default
-      styles: ./web/styles.css`,
+    # Page microfrontend (required): ./web/${item.kind} by default, default export; add \`web: { entry: ... }\` to move it.`,
     )
     .join("\n");
 
   return `schemaVersion: 1
-id: ${plugin.packageId}
+id: ${plugin.name}
 name: ${plugin.pascalName}
 version: 0.1.0
 description: TODO describe this plugin
@@ -119,20 +111,7 @@ export function renderIndex(kinds: readonly PluginKind[]): string {
 }
 
 export function renderSource(values: TemplateValues): string {
-  const renderers: Record<PluginKind, (input: TemplateValues) => string> = {
-    input: renderInput,
-    output: renderOutput,
-    action: renderAction,
-    agent: renderAgent,
-    orchestrator: renderOrchestrator,
-    discovery: renderDiscovery,
-    database: renderDatabase,
-    memory: renderMemory,
-    ai: renderAi,
-    env: renderEnvironment,
-  };
-
-  return renderers[values.kind](values);
+  return SOURCE_RENDERERS[values.kind](values);
 }
 
 export function renderWeb(values: TemplateValues): string {
@@ -143,11 +122,15 @@ import {
   type MicrofrontendProps,
 } from "@agent-os/microfrontend";
 
+/** The page microfrontend (required): the default export of this entry. */
 export default function ${values.className}Microfrontend(
   props: MicrofrontendProps,
 ) {
   return <CapabilityMicrofrontend {...props} />;
 }
+
+/** Renderers for the chat components the capability declares in uiComponents(), matched by name. */
+export const openui = [];
 `;
 }
 
@@ -229,6 +212,7 @@ function renderAction({ className, name, pascalName, snakeName }: TemplateValues
   CapabilityExecutionContext,
   CapabilityManifest,
   CapabilityResult,
+  UIComponentSpec,
 } from "@agent-os/core/domain";
 
 export interface ${pascalName}ActionInput {
@@ -266,6 +250,16 @@ export class ${className}
 
   constructor(private readonly options: ${className}Options = {}) {
     void this.options;
+  }
+
+  /** Chat components the model may write into answers; pair each with a renderer in web/action \`openui\`. */
+  uiComponents(): readonly UIComponentSpec[] {
+    return [];
+  }
+
+  /** Read by the agent through read_capability_docs: when to use this, how the inputs work, limits, examples. */
+  docs(): string {
+    return "TODO: explain when to use ${snakeName}, how its inputs work, and its limits.";
   }
 
   async execute(
@@ -464,7 +458,28 @@ export class ${className} implements Memory {
 `;
 }
 
-function renderAi({ className, name }: TemplateValues): string {
+function renderSystem1({ className }: TemplateValues): string {
+  return `import type { System1, SystemAnswers, SystemAskOptions, SystemQuestions } from "@agent-os/core/domain";
+
+export class ${className} implements System1 {
+  readonly model = "default";
+
+  async ask(
+    state: Record<string, unknown>,
+    questions: SystemQuestions,
+    options: SystemAskOptions = {},
+  ): Promise<SystemAnswers> {
+    // TODO: answer every question about \`state\`.
+    void state;
+    void questions;
+    void options;
+    throw new Error("${className}.ask is not implemented");
+  }
+}
+`;
+}
+
+function renderSystem2({ className, name }: TemplateValues): string {
   return `import type {
   AIExecutableFunctionDefinition,
   AIFunctionCallResult,
@@ -474,7 +489,10 @@ function renderAi({ className, name }: TemplateValues): string {
   AIModelSettings,
   AIProcessOptions,
   AIProcessResult,
-  AIProvider,
+  System2,
+  SystemAnswers,
+  SystemAskOptions,
+  SystemQuestions,
 } from "@agent-os/core/domain";
 
 export interface ${className}Options {
@@ -483,7 +501,7 @@ export interface ${className}Options {
   settings?: AIModelSettings;
 }
 
-export class ${className} implements AIProvider {
+export class ${className} implements System2 {
   readonly provider = "${name}" as const;
   readonly model: string;
   readonly settings: Readonly<AIModelSettings>;
@@ -516,6 +534,17 @@ export class ${className} implements AIProvider {
     void definition;
     void options;
     throw new Error("${className}.functionCall is not implemented");
+  }
+
+  async ask(
+    state: Record<string, unknown>,
+    questions: SystemQuestions,
+    options: SystemAskOptions = {},
+  ): Promise<SystemAnswers> {
+    void state;
+    void questions;
+    void options;
+    throw new Error("${className}.ask is not implemented");
   }
 
   async processWithFunctions(
@@ -572,3 +601,17 @@ export class ${className} implements Environment {
 }
 `;
 }
+
+const SOURCE_RENDERERS: Record<PluginKind, (input: TemplateValues) => string> = {
+  input: renderInput,
+  output: renderOutput,
+  action: renderAction,
+  agent: renderAgent,
+  orchestrator: renderOrchestrator,
+  discovery: renderDiscovery,
+  database: renderDatabase,
+  memory: renderMemory,
+  system1: renderSystem1,
+  system2: renderSystem2,
+  env: renderEnvironment,
+};

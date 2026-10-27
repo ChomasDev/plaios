@@ -49,7 +49,6 @@ export async function createPlugin(
 
   const pascalName = toPascalCase(name);
   const packageName = `@agent-os/${name}`;
-  const packageId = name;
   const packagesDirectory = join(workspaceRoot, "packages");
   const packageDirectory = join(packagesDirectory, name);
 
@@ -66,7 +65,6 @@ export async function createPlugin(
     snakeName: toSnakeCase(name),
     className: `${pascalName}${getPluginKindConfig(kind).classSuffix}`,
     packageName,
-    packageId,
   }));
 
   const plugin = interfaces[0]!;

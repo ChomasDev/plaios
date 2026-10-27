@@ -47,7 +47,8 @@ test("creates one plugin with multiple interfaces without overwriting", async ()
 
     for (const kind of PLUGIN_KINDS) {
       assert.match(manifest, new RegExp(`kind: ${kind}`));
-      assert.match(manifest, new RegExp(`entry: \\.\/web\/${kind}`));
+      // The page microfrontend uses the conventional ./web/<kind> entry, so the yaml only documents it.
+      assert.match(manifest, new RegExp(`\\./web/${kind} by default`));
       assert.match(index, new RegExp(`\\./${kind}\\.js`));
       assert.ok(
         await readFile(

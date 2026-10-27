@@ -1,5 +1,3 @@
-import type { DataArtifact } from "../artifacts/data-artifact.js";
-
 export interface CapabilityError {
   code: string;
   message: string;
@@ -7,22 +5,12 @@ export interface CapabilityError {
   details?: unknown;
 }
 
-export interface CapabilityMetrics {
-  startedAt: Date;
-  completedAt: Date;
-  durationMs: number;
-}
-
-interface CapabilityResultBase {
-  artifacts?: readonly DataArtifact[];
-}
-
-export interface CapabilitySuccess<T> extends CapabilityResultBase {
+export interface CapabilitySuccess<T> {
   success: true;
   data: T;
 }
 
-export interface CapabilityFailure extends CapabilityResultBase {
+export interface CapabilityFailure {
   success: false;
   error: CapabilityError;
 }

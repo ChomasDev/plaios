@@ -80,25 +80,3 @@ export function BreadcrumbSeparator({
     </li>
   );
 }
-
-export function BreadcrumbEllipsis({
-  className,
-  ...props
-}: ComponentProps<"span">) {
-  return (
-    <span
-      data-slot="breadcrumb-ellipsis"
-      role="presentation"
-      aria-hidden="true"
-      className={cn("flex size-5 items-center justify-center [&>svg]:size-4", className)}
-      {...props}
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-4" aria-hidden="true">
-        <circle cx="5" cy="12" r="1" fill="currentColor" />
-        <circle cx="12" cy="12" r="1" fill="currentColor" />
-        <circle cx="19" cy="12" r="1" fill="currentColor" />
-      </svg>
-      <span className="sr-only">More</span>
-    </span>
-  );
-}

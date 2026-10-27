@@ -1,6 +1,6 @@
 {
   "name": "@agent-os/package-manager",
-  "version": "0.8.10",
+  "version": "0.9.1",
   "description": "CLI for creating and managing Agent OS plugin packages",
   "type": "module",
   "bin": {

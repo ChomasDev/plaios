@@ -83,3 +83,15 @@ components:
     config:
       defaultLimit: 20
       maxLimit: 50
+  - package: "@agent-os/action-gods-eye-view"
+    version: 0.7.0
+    interface: gods-eye-view.action
+    instanceId: action:action-gods-eye-view
+    config:
+      baseUrl: http://localhost:4173
+      bundledServer: true
+      protocolTrigger: occhio di dio
+      launchMode: auto
+      port: 22
+      geocoderUrl: https://nominatim.openstreetmap.org/search
+      timeoutMs: 15000

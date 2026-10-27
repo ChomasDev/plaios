@@ -11,6 +11,3 @@ export interface Environment {
   has(key: string): boolean;
   getAll(): Record<string, string>;
 }
-
-/** Compatibility name used by the original AgentHarness contracts. */
-export type EnvPort = Environment;

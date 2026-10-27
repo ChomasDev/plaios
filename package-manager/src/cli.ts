@@ -117,13 +117,11 @@ export function parsePluginKinds(values: readonly string[]): PluginKind[] {
   const kinds: PluginKind[] = [];
 
   for (const token of tokens) {
-    const numericIndex = Number.parseInt(token, 10) - 1;
-    const kind =
-      String(numericIndex + 1) === token
-        ? PLUGIN_KINDS[numericIndex]
-        : isPluginKind(token)
-          ? token
-          : undefined;
+    const kind = isPluginKind(token)
+      ? token
+      : /^[1-9]\d*$/.test(token)
+        ? PLUGIN_KINDS[Number(token) - 1]
+        : undefined;
 
     if (!kind) {
       throw new Error(

@@ -1,0 +1,64 @@
+{
+  "name": "@agent-os/developer-guide",
+  "version": "0.1.1",
+  "description": "The Agent OS developer guide: build inputs, outputs, capabilities, memory and more, with an interactive map of how they talk",
+  "keywords": [
+    "agent-os",
+    "capability",
+    "action",
+    "docs",
+    "developer",
+    "guide",
+    "plugin"
+  ],
+  "private": false,
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "web",
+    "guide",
+    "agent-os.package.yaml",
+    "README.md"
+  ],
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    },
+    "./web/action": {
+      "types": "./dist/web/action/index.d.ts",
+      "import": "./dist/web/action/index.js"
+    },
+    "./web/styles.css": "./web/styles.css"
+  },
+  "scripts": {
+    "build": "node scripts/embed-guide.mjs && tsc -p tsconfig.json",
+    "test": "pnpm build && node --test test/**/*.test.mjs",
+    "typecheck": "node scripts/embed-guide.mjs && tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@agent-os/core": "workspace:*",
+    "@agent-os/microfrontend": "workspace:*",
+    "lucide-react": "^0.544.0"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "@types/react": "^19.0.0",
+    "react": "19.2.4",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

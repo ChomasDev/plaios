@@ -10,5 +10,7 @@ export interface OutputInterface {
   readonly channel: OutputChannel;
   /** Human-readable routing guidance for an orchestrator. */
   readonly description?: string;
+  /** How replies must be formatted for this destination (plain text, markdown, a UI language); given to the model. */
+  readonly instructions?: string;
   write(content: OutputContent): Promise<void>;
 }

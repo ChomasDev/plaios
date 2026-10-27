@@ -7,7 +7,8 @@ export const PLUGIN_KINDS = [
   "discovery",
   "database",
   "memory",
-  "ai",
+  "system1",
+  "system2",
   "env",
 ] as const;
 
@@ -60,10 +61,15 @@ const CONFIG: Record<PluginKind, PluginKindConfig> = {
     classSuffix: "Memory",
     description: "Store and recall agent memories",
   },
-  ai: {
-    label: "AIProvider",
-    classSuffix: "AIProvider",
-    description: "Connect Agent OS to a model provider",
+  system1: {
+    label: "System1",
+    classSuffix: "System1",
+    description: "Answer fast typed judgments (for example TypeSafe Jev)",
+  },
+  system2: {
+    label: "System2",
+    classSuffix: "System2",
+    description: "Connect Agent OS to a generative model provider",
   },
   env: {
     label: "Environment",

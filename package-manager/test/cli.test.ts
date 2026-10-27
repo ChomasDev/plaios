@@ -16,7 +16,7 @@ test("parses repeated named kind arguments", () => {
   assert.deepEqual(
     parseCreateArguments([
       "--kind",
-      "ai",
+      "system2",
       "--kind",
       "memory",
       "--name",
@@ -25,7 +25,7 @@ test("parses repeated named kind arguments", () => {
       "../AgentOsv2",
     ]),
     {
-      kinds: ["ai", "memory"],
+      kinds: ["system2", "memory"],
       name: "browser",
       root: "../AgentOsv2",
       yes: false,
