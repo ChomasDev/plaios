@@ -16,12 +16,19 @@ This repo is where you start. It holds the contracts, the shared UI kit, the too
 ## How it works
 
 <p align="center">
-  <img src="docs/assets/architecture.svg" alt="Architecture: channels and the SDK contracts on top, the host and kernel with its pluggable slots in the middle, external resources at the bottom" width="100%">
+  <img src="docs/assets/architecture.svg" alt="Message flow: an input fires, the runtime recalls and saves memory, the orchestrator picks tools and output using discovery and the LLM, the agent loop calls the LLM and actions, outputs deliver, and memory keeps the answer" width="100%">
 </p>
 
-- **Application layer.** Channels (web chat, Telegram, voice, an OpenAI-compatible API, cron) are plugins of kind `input`/`output`. Every plugin is built against the typed contracts in `core`.
-- **Kernel layer.** The host (`app-dynamic`) installs packages, reads their manifests and injects what each one `required`. The runtime pipeline moves one message through `input ▸ memory ▸ orchestrate ▸ agent loop ▸ output ▸ remember`, and every slot below it is a swappable plugin.
-- **Resource layer.** The npm registry plugins come from, the isolated runtime folder, SQLite, `.env` secrets, model APIs and the outside world.
+1. **An input fires** (web chat, Telegram, voice, cron, an OpenAI-compatible API).
+2. **Memory recalls** the last 10 turns and up to 10 relevant long-term memories.
+3. **The user's turn is saved** to memory.
+4. **The orchestrator decides** which tools the agent may use and which output answers, using **discovery** to find candidate tools and the **LLM** to choose.
+5. What it proposed to remember is **stored**.
+6. **The agent loop runs**: the LLM reasons and calls **actions** (fetched from discovery by id) until it has an answer.
+7. **Outputs deliver**: one gets the live stream, the others the finished text.
+8. **Memory keeps** the answer.
+
+Every box is a plugin, and **env** and the **database** are injected into whichever plugin lists them in `required`. At boot the host installs the packages from `plaios.yaml`, builds them in dependency order and registers every action in discovery.
 
 Inputs never know outputs exist, the agent loop never touches memory directly: every arrow goes through a contract in `core/`. The full walkthrough is in the developer guide, chapter [One message, start to finish](developer-guide/guide/02-journey.md).
 
