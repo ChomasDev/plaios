@@ -48,6 +48,14 @@ Everything is one pnpm workspace, so the submodules build against the local `cor
 
 ## Quick start
 
+In an empty folder (Node.js 22.5 or newer):
+
+```bash
+npx plaios         # pick the AI, environment, database, channels and tools, then it starts
+```
+
+From source:
+
 ```bash
 git clone --recursive https://github.com/ChomasDev/plaios.git
 cd plaios
@@ -63,7 +71,9 @@ The plugins are installed from an npm registry, so the first time you also need 
 pnpm plaios create action weather   # scaffolds packages/weather
 ```
 
-Then read the [quickstart chapter](developer-guide/guide/04-quickstart.md). Chapters by topic:
+Working with Claude Code? The repo ships a **`create-plaios-plugin`** skill (`.claude/skills/`): ask it for "a plugin that …" and it scaffolds, implements, tests and publishes the package following the guide.
+
+Then read the [quickstart chapter](developer-guide/guide/04-quickstart.md), or the whole guide as one page at `/docs/` on the website. Chapters by topic:
 
 - Start here: [why](developer-guide/guide/01-why.md), [one message end to end](developer-guide/guide/02-journey.md), [anatomy of a package](developer-guide/guide/03-anatomy.md), [quickstart](developer-guide/guide/04-quickstart.md)
 - Components: [input](developer-guide/guide/10-input.md), [output](developer-guide/guide/11-output.md), [action](developer-guide/guide/12-action.md), [memory](developer-guide/guide/13-memory.md), [orchestrator](developer-guide/guide/14-orchestrator.md), [agent loop](developer-guide/guide/15-agent.md), [discovery](developer-guide/guide/16-discovery.md), [models](developer-guide/guide/17-models.md), [database](developer-guide/guide/18-database.md), [env](developer-guide/guide/19-env.md)

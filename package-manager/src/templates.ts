@@ -9,11 +9,13 @@ export interface TemplateValues {
   readonly packageName: string;
 }
 
-export function renderPackageJson(values: TemplateValues): string {
+export function renderPackageJson(values: TemplateValues, kinds: readonly PluginKind[] = [values.kind]): string {
   return `${JSON.stringify(
     {
       name: values.packageName,
       version: "0.1.0",
+      // The Store lists registry packages found by the "plaios" keyword and groups them by kind.
+      keywords: ["plaios", "capability", ...kinds],
       private: true,
       type: "module",
       sideEffects: ["**/*.css"],

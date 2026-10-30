@@ -71,7 +71,7 @@ export async function createPlugin(
 
   const files = new Map<string, string>([
     ["agent-os.package.yaml", renderManifest(interfaces)],
-    ["package.json", renderPackageJson(plugin)],
+    ["package.json", renderPackageJson(plugin, kinds)],
     ["tsconfig.json", renderTsConfig()],
     [join("src", "index.ts"), renderIndex(kinds)],
     [join("web", "styles.css"), renderWebStyles()],
