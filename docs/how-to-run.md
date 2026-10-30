@@ -24,22 +24,15 @@ Forgot `--recursive`? Run `git submodule update --init --recursive`. Empty `pack
 
 ## 2. Start a local registry
 
-PLAIOS uses [Verdaccio](https://verdaccio.org), a private npm registry. In a second terminal:
+PLAIOS ships its own registry, `@plaios/registry`: [Verdaccio](https://verdaccio.org) plus the PLAIOS Store UI on one port. In a second terminal:
 
 ```bash
-npx verdaccio
+pnpm registry          # from the repo; anywhere else: npx @plaios/registry
 ```
 
-It listens on `http://localhost:4873` and writes its config to `~/.config/verdaccio/config.yaml`. Open that file and add this block **above** the `'@*/*'` entry, so `@plaios/*` is served only from your registry and never proxied to npmjs:
+It prints its URL: the Store and the npm registry are both on `http://localhost:4873`. Packages it does not have come from npmjs, so your local builds sit next to the public `@plaios/*` releases. Data and `config.yaml` live in `~/.plaios/registry`.
 
-```yaml
-packages:
-  '@plaios/*':
-    access: $all
-    publish: $authenticated
-```
-
-Restart Verdaccio, then create a user (any name and password, it is local):
+Create a user once (any name and password, it is local):
 
 ```bash
 npm adduser --registry http://localhost:4873
@@ -68,26 +61,25 @@ pnpm plaios
 The first time, there is no `plaios.yaml`, so a short setup runs in the terminal:
 
 ```text
-Welcome to PLAIOS. Let's set up your agent.
-(The web chat at http://localhost:3100 is always included.)
-
-Which AI should power the agent?
-  1. Codex, signed in with `codex login` (ChatGPT account)
-  2. Codex, with an OpenAI API key
-Choose [1]:
-
-Where else do you want to talk to it?
-  1. Telegram bot
-  2. OpenAI-compatible HTTP API (use it from any OpenAI client)
-  3. Live voice (OpenAI Realtime)
-Numbers, comma-separated (empty for none): 1
-
-Which tools should it have?
-  1. Web search (Perplexity)
-  ...
+┌   PLAIOS    the pluggable AI operating system
+│
+◆  Which AI should power the agent?
+│  ● Codex with your ChatGPT account (run `codex login` first)
+│  ○ Codex with an OpenAI API key
+│
+◆  How do you want to reach it?
+│  ◼ Telegram bot   ◻ OpenAI-compatible HTTP API   ◻ Live voice
+│  ◼ Scheduled prompts   ◻ Pattern predictor
+│
+◆  What should it be able to do?
+│  ◼ Web search   ◻ Home Assistant   ◼ Remote computers   ◻ T3 Code ...
+│
+◆  Enter keys now for… (unpick to set up later)
+│  ◻ Telegram bot
+│  ◼ Web search
 ```
 
-It asks only for the keys your choices need (typed keys are hidden), writes `plaios.yaml` (the component graph) and `.env` (the secrets, merged into any existing one), then starts. Every later `pnpm plaios` starts straight away; run `pnpm plaios init` to redo the setup.
+Arrows move, space picks, enter confirms. It asks only for the keys your choices need (typed keys are hidden); anything you unpick in the last list is left as a `# KEY=` placeholder in `.env` and shows red in the control plane until you fill it. The last step picks where plugins come from: public npm, the PLAIOS registry on `localhost:4873` (if nothing answers there, the setup starts it in the background, logging to `.agent-os/registry.log`), or a custom URL. Switch later in **Settings → Registry**, which has one-click *Public npm* and *Local* buttons. It writes `plaios.yaml` (the component graph) and `.env` (the secrets, merged into any existing one), then starts. Every later `pnpm plaios` starts straight away; run `pnpm plaios init` to redo the setup.
 
 The host then:
 
@@ -139,7 +131,7 @@ After changing a plugin: bump its `version` in **both** `package.json` and `agen
 | Symptom | Fix |
 | --- | --- |
 | `ERR_PNPM_FETCH_404` for `@plaios/...` at start | That package is not published to the registry in `plaios.yaml`. Publish it (step 3). |
-| `EPUBLISHCONFLICT` / version already exists | Bump the version, or the `@plaios/*` block is missing from the Verdaccio config and it is proxying npmjs. |
+| `EPUBLISHCONFLICT` / version already exists | Bump the version. The local registry also sees every version already on public npm. |
 | Install refuses a just-published version | pnpm 11 enforces `minimumReleaseAge`. Add the version to `minimumReleaseAgeExclude` in `.agent-os/runtime/pnpm-workspace.yaml`. |
 | `node:sqlite` not found | Node is older than 22.5. |
 | A component is red | Open its page: it shows the error and the config/secret it is missing. |

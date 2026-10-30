@@ -3,6 +3,7 @@ packages:
   - "microfrontend"
   - "package-manager"
   - "developer-guide"
+  - "registry"
   - "app-dynamic"
   - "packages/*"
   - "packages/*/*"

@@ -3,13 +3,14 @@
 import { createInterface } from "node:readline/promises";
 import { realpathSync } from "node:fs";
 import { stdin, stdout } from "node:process";
-import { relative, resolve } from "node:path";
+import { readFile } from "node:fs/promises";
+import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
-import { parseStartArguments, resolveConfigPath, runStart } from "@plaios/app-dynamic";
+import { parseDynamicAppConfig, parseStartArguments, resolveConfigPath, runStart } from "@plaios/app-dynamic";
 
 import { createPlugin } from "./create-plugin.js";
-import { runOnboarding } from "./onboard.js";
+import { ensureLocalRegistry, runOnboarding } from "./onboard.js";
 import {
   getPluginKindConfig,
   isPluginKind,
@@ -245,6 +246,14 @@ Next:
   }
 }
 
+/** Starts the host, first bringing up the local registry if plaios.yaml (or --registry) points at one that is down. */
+async function startWithRegistry(argv: readonly string[], currentDirectory: string, configPath: string): Promise<void> {
+  const override = parseStartArguments(argv).registry;
+  const registry = override ?? (existsSync(configPath) ? parseDynamicAppConfig(await readFile(configPath, "utf8")).registry : undefined);
+  if (registry) await ensureLocalRegistry(registry, dirname(configPath));
+  await runStart(argv, currentDirectory);
+}
+
 export async function main(
   argv: readonly string[] = process.argv.slice(2),
   currentDirectory = process.cwd(),
@@ -259,7 +268,7 @@ export async function main(
   if (command === "init") {
     if (!stdin.isTTY || !stdout.isTTY) throw new Error("plaios init needs a terminal.");
     const configPath = resolveConfigPath(currentDirectory, parseStartArguments(commandArguments).configPath);
-    if (await runOnboarding(configPath)) console.log("Run `plaios` to start.");
+    if ((await runOnboarding(configPath)) === "start") await startWithRegistry(commandArguments, currentDirectory, configPath);
     return;
   }
 
@@ -274,9 +283,10 @@ export async function main(
     const configPath = resolveConfigPath(currentDirectory, options.configPath);
     // Without a terminal, start falls back to app-dynamic's starter config.
     if (!options.help && !existsSync(configPath) && stdin.isTTY && stdout.isTTY) {
-      if (!(await runOnboarding(configPath))) return;
+      if ((await runOnboarding(configPath)) !== "start") return;
     }
-    await runStart(startArguments, currentDirectory);
+    if (options.help) return runStart(startArguments, currentDirectory);
+    await startWithRegistry(startArguments, currentDirectory, configPath);
     return;
   }
 

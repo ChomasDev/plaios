@@ -1,6 +1,6 @@
 {
   "name": "@plaios/package-manager",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "description": "CLI for creating and managing PLAIOS plugin packages",
   "type": "module",
   "bin": {
@@ -19,6 +19,8 @@
     }
   },
   "dependencies": {
+    "@clack/core": "1.5.1",
+    "@clack/prompts": "1.8.1",
     "@plaios/app-dynamic": "workspace:*"
   },
   "scripts": {

@@ -7,6 +7,7 @@
     "build": "pnpm -r --if-present build",
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
+    "registry": "pnpm --filter @plaios/registry build && node registry/dist/src/cli.js",
     "landing:dev": "pnpm --filter @plaios/app-dynamic landing:dev",
     "landing:build": "pnpm --filter @plaios/app-dynamic landing:build",
     "landing:preview": "pnpm --filter @plaios/app-dynamic landing:preview"
