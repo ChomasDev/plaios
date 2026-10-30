@@ -20,6 +20,11 @@ export type AgentLoopEvent =
       capabilities: readonly string[];
     })
   | (AgentLoopEventBase & {
+      /** A piece of the model's reasoning, when its provider exposes it. */
+      type: "model.reasoning";
+      delta: string;
+    })
+  | (AgentLoopEventBase & {
       type: "capability.started";
       callId: string;
       capability: string;

@@ -15,6 +15,8 @@ export interface AIProcessOptions {
   instructions?: string;
   settings?: AIModelSettings;
   signal?: AbortSignal;
+  /** The model's reasoning as it streams, for providers that expose it; others never call it. */
+  onReasoning?: (delta: string) => void;
 }
 
 export interface AIImageInput {
