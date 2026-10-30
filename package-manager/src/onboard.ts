@@ -27,6 +27,8 @@ interface Secret {
 export interface Feature {
   label: string;
   hint?: string;
+  /** For AI choices: where the model id goes and what to suggest. */
+  model?: { env: string; fallback: string };
   icon?: string;
   components: readonly DynamicComponentConfig[];
   secrets?: readonly Secret[];
@@ -54,14 +56,26 @@ const BASE: readonly DynamicComponentConfig[] = [
 ];
 
 const codex = component("codex", "codex.ai", "ai:codex");
+const claudeCode = component("claude-code", "claude-code.ai", "ai:claude-code");
+const CODEX_MODEL = { env: "CODEX_MODEL", fallback: "gpt-5.6-sol" };
+const CLAUDE_MODEL = { env: "CLAUDE_CODE_MODEL", fallback: "claude-opus-5-5" };
 
 export const AI_CHOICES: readonly Feature[] = [
-  { label: "Codex with your ChatGPT account", icon: "✦", hint: "run `codex login` first", components: [codex] },
+  { label: "Codex with your ChatGPT account", icon: "✦", hint: "run `codex login` first", model: CODEX_MODEL, components: [codex] },
   {
     label: "Codex with an OpenAI API key",
     icon: "⌘",
+    model: CODEX_MODEL,
     components: [codex],
     secrets: [{ env: "CODEX_API_KEY", question: "OpenAI API key", secret: true }],
+  },
+  { label: "Claude Code with your Claude account", icon: "✳", hint: "run `claude` once and sign in", model: CLAUDE_MODEL, components: [claudeCode] },
+  {
+    label: "Claude with an Anthropic API key",
+    icon: "◬",
+    model: CLAUDE_MODEL,
+    components: [claudeCode],
+    secrets: [{ env: "ANTHROPIC_API_KEY", question: "Anthropic API key", secret: true }],
   },
 ];
 
@@ -443,7 +457,7 @@ export async function runOnboarding(configPath: string): Promise<"start" | "save
     const later = needsKeys.filter((feature) => !now.includes(feature));
 
     const env: Record<string, string> = {};
-    env.CODEX_MODEL = answer(await text({ message: "Model", initialValue: "gpt-5.6-sol" })) || "gpt-5.6-sol";
+    if (ai.model) env[ai.model.env] = answer(await text({ message: "Model", initialValue: ai.model.fallback })) || ai.model.fallback;
     const pending: string[] = [];
     for (const feature of features) {
       const deferred = later.includes(feature);
@@ -466,6 +480,8 @@ export async function runOnboarding(configPath: string): Promise<"start" | "save
     if (await registryReachable(registry)) {
       const missing = await missingPackages(registry, features.flatMap((feature) => feature.components.map((component) => component.package)));
       const dropped = features.filter((feature) => feature.components.some((component) => missing.includes(component.package)));
+      // An agent without its model cannot start, so this one is not left out quietly.
+      if (dropped.includes(ai)) throw new Error(`${ai.label} is not in ${registry} yet. Run the setup again and pick another AI or registry.`);
       if (dropped.length > 0) {
         log.warn(`Not in ${registry} yet, so left out: ${dropped.map((feature) => feature.label).join(", ")}. Add them later from the Store.`);
         features.splice(0, features.length, ...features.filter((feature) => !dropped.includes(feature)));

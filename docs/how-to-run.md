@@ -9,7 +9,9 @@ The host (`app-dynamic`) installs plugins **from an npm registry**, not from the
 - Node.js **22.5 or newer** (the SQLite plugin uses `node:sqlite`)
 - pnpm 10 (`corepack enable` picks the version pinned in `package.json`)
 - git
-- An AI provider. This tutorial uses the Codex plugin: either an OpenAI API key, or the Codex CLI already logged in (`codex login`).
+- An AI provider, one of:
+  - **Codex**: an OpenAI API key, or the Codex CLI already logged in (`codex login`).
+  - **Claude Code**: an Anthropic API key, or Claude Code already signed in with your Claude account (run `claude` once).
 
 ## 1. Clone and build
 
@@ -66,6 +68,8 @@ The first time, there is no `plaios.yaml`, so a short setup runs in the terminal
 ◆  Which AI should power the agent?
 │  ● Codex with your ChatGPT account (run `codex login` first)
 │  ○ Codex with an OpenAI API key
+│  ○ Claude Code with your Claude account (run `claude` once and sign in)
+│  ○ Claude with an Anthropic API key
 │
 ◆  How do you want to reach it?
 │  ◼ Telegram bot   ◻ OpenAI-compatible HTTP API   ◻ Live voice

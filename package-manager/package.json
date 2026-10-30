@@ -1,6 +1,6 @@
 {
   "name": "@plaios/package-manager",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "CLI for creating and managing PLAIOS plugin packages",
   "type": "module",
   "bin": {
