@@ -19,6 +19,25 @@ Check `files` in `package.json` includes everything the exports point to: `dist`
 
 Bump `version` in **both** `package.json` and `agent-os.package.yaml`. Breaking a capability's input schema is a major change for the agent too.
 
+## Offer it in the setup
+
+`plaios init` searches the registry for packages with the `plaios` keyword and offers every entry their `package.json` declares under `plaios.setup`. The scaffold writes one per kind; fill in the label, hint and the keys to ask for:
+
+```json title="package.json"
+"plaios": {
+  "setup": [{
+    "step": "tool",
+    "label": "Weather",
+    "icon": "☂",
+    "hint": "forecasts for any city",
+    "components": [{ "interface": "weather.action", "instanceId": "action:weather" }],
+    "secrets": [{ "env": "WEATHER_API_KEY", "question": "Weather API key", "secret": true }]
+  }]
+}
+```
+
+`step` picks the screen: `ai`, `environment`, `database`, `channel` or `tool`. Each `env` should match a `config[]` entry of the manifest, so the answer reaches your class; `optional: true` lets the user leave it empty, `fallback` pre-fills it. An AI entry can add `"model": { "env": "...", "fallback": "..." }` to ask for the model id. Several entries are fine: Claude Code offers "with your Claude account" and "with an API key". A package without `plaios.setup` is only in the Store.
+
 ## 3. Publish
 
 ```bash terminal

@@ -213,6 +213,79 @@ export const TOOLS: readonly Feature[] = [
   },
 ];
 
+export const SETUP_STEPS = ["ai", "environment", "database", "channel", "tool"] as const;
+export type SetupStep = (typeof SETUP_STEPS)[number];
+export type Catalog = Record<SetupStep, readonly Feature[]>;
+
+/** Offered when the registry cannot be searched, and for packages that do not declare `plaios.setup` yet. */
+export const BUILT_IN: Catalog = { ai: AI_CHOICES, environment: ENVIRONMENTS, database: DATABASES, channel: CHANNELS, tool: TOOLS };
+
+const ENV_NAME = /^[A-Z_][A-Z0-9_]*$/;
+const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null && !Array.isArray(value);
+const optionalString = (value: unknown) => value === undefined || typeof value === "string";
+
+/**
+ * Reads the setup entries a package declares in package.json under `plaios.setup`.
+ * Registry data is untrusted: an entry with any malformed field is skipped. Undefined when the package declares none.
+ */
+export function declaredFeatures(name: string, packageJson: unknown): (Feature & { step: SetupStep })[] | undefined {
+  const entries = isRecord(packageJson) && isRecord(packageJson.plaios) ? packageJson.plaios.setup : undefined;
+  if (!Array.isArray(entries)) return undefined;
+  return entries.flatMap((entry) => {
+    if (!isRecord(entry) || !SETUP_STEPS.includes(entry.step as SetupStep) || typeof entry.label !== "string" || !optionalString(entry.hint) || !optionalString(entry.icon)) return [];
+    const components = Array.isArray(entry.components) ? entry.components : [];
+    const secrets = Array.isArray(entry.secrets) ? entry.secrets : entry.secrets === undefined ? [] : undefined;
+    const model = entry.model;
+    if (components.length === 0 || !components.every((c) => isRecord(c) && typeof c.interface === "string" && typeof c.instanceId === "string" && (c.config === undefined || isRecord(c.config)))) return [];
+    if (!secrets?.every((s) => isRecord(s) && typeof s.env === "string" && ENV_NAME.test(s.env) && typeof s.question === "string" && optionalString(s.fallback))) return [];
+    if (model !== undefined && !(isRecord(model) && typeof model.env === "string" && ENV_NAME.test(model.env) && typeof model.fallback === "string")) return [];
+    return [{
+      step: entry.step as SetupStep,
+      label: entry.label,
+      hint: entry.hint as string | undefined,
+      icon: entry.icon as string | undefined,
+      model: model as Feature["model"],
+      components: components.map((c) => ({ package: name, version: "latest", interface: String(c.interface), instanceId: String(c.instanceId), config: (c.config ?? {}) as Record<string, unknown> })),
+      secrets: secrets.map((s) => ({ env: String(s.env), question: String(s.question), secret: s.secret === true, optional: s.optional === true, fallback: s.fallback as string | undefined })),
+    }];
+  });
+}
+
+/** The built-in choices, where every package that declares its own entries replaces its built-in ones. */
+export function mergeCatalog(declared: ReadonlyMap<string, readonly (Feature & { step: SetupStep })[]>): Catalog {
+  const declaredBy = (feature: Feature) => feature.components.some((c) => declared.has(c.package));
+  const extra = [...declared.values()].flat();
+  const pick = (step: SetupStep) => [...BUILT_IN[step].filter((feature) => !declaredBy(feature)), ...extra.filter((feature) => feature.step === step)];
+  return { ai: pick("ai"), environment: pick("environment"), database: pick("database"), channel: pick("channel"), tool: pick("tool") };
+}
+
+const fetchJson = async (url: URL | string, timeout: number) => {
+  const response = await fetch(url, { headers: { accept: "application/json" }, signal: AbortSignal.timeout(timeout) });
+  if (!response.ok) throw new Error(`${url} answered ${response.status}`);
+  return response.json() as Promise<unknown>;
+};
+
+/** Searches the registry for PLAIOS packages and collects the setup entries their latest versions declare. */
+export async function discoverCatalog(registry: string): Promise<Catalog> {
+  const search = new URL("/-/v1/search", `${registry}/`);
+  // Verdaccio rejects an empty query with 400; every PLAIOS package carries this keyword.
+  search.searchParams.set("text", "plaios");
+  search.searchParams.set("size", "250");
+  const body = await fetchJson(search, 8000);
+  const names = (isRecord(body) && Array.isArray(body.objects) ? body.objects : [])
+    .map((entry) => (isRecord(entry) && isRecord(entry.package) ? entry.package.name : undefined))
+    .filter((name): name is string => typeof name === "string");
+  const declared = new Map<string, (Feature & { step: SetupStep })[]>();
+  await Promise.all(names.map(async (name) => {
+    // One unreadable package should not hide the rest.
+    const packument = await fetchJson(`${registry}/${name.replace("/", "%2F")}`, 15_000).catch(() => undefined);
+    const latest = isRecord(packument) && isRecord(packument["dist-tags"]) && isRecord(packument.versions) ? packument.versions[String(packument["dist-tags"].latest)] : undefined;
+    const features = declaredFeatures(name, latest);
+    if (features?.length) declared.set(name, features);
+  }));
+  return mergeCatalog(declared);
+}
+
 export function buildOnboardingConfig(registry: string, features: readonly Feature[]): DynamicAppConfig {
   return {
     schemaVersion: 1,
@@ -410,7 +483,7 @@ async function fixRegistryAuth(registry: string): Promise<void> {
 
 async function chooseRegistry(projectRoot: string): Promise<string> {
   const fromEnv = process.env.AGENT_OS_REGISTRY;
-  const choice = answer(await pickOne(step(7, 7, "Where should plugins be installed from?"), REGISTRY_CHOICES));
+  const choice = answer(await pickOne(step(1, 7, "Where should plugins be installed from?"), REGISTRY_CHOICES));
   if (choice === "public") return DEFAULT_REGISTRY;
   if (choice === "custom") {
     return answer(await text({
@@ -432,6 +505,20 @@ async function chooseRegistry(projectRoot: string): Promise<string> {
   return LOCAL_REGISTRY;
 }
 
+/** The choices the registry offers; the built-in list when it cannot be searched. */
+async function loadCatalog(registry: string): Promise<Catalog> {
+  const loading = spinner();
+  loading.start(`Looking for plugins in ${registry}`);
+  try {
+    const catalog = await discoverCatalog(registry);
+    loading.stop(`Found ${SETUP_STEPS.reduce((total, key) => total + catalog[key].length, 0)} choices in ${registry}`);
+    return catalog;
+  } catch (error) {
+    loading.error(`Could not search ${registry} (${error instanceof Error ? error.message : String(error)}); showing the built-in choices.`);
+    return BUILT_IN;
+  }
+}
+
 /** Interactive setup. Resolves to "start" when the user wants to start now, "saved" when not, false when cancelled. */
 export async function runOnboarding(configPath: string): Promise<"start" | "saved" | false> {
   try {
@@ -444,16 +531,18 @@ export async function runOnboarding(configPath: string): Promise<"start" | "save
       return false;
     }
 
-    const ai = answer(await pickOne(step(1, 7, "Which AI should power the agent?"), options(AI_CHOICES)));
-    const environment = answer(await pickOne(step(2, 7, "Where should it read keys and settings from?"), options(ENVIRONMENTS)));
-    const database = answer(await pickOne(step(3, 7, "Where should it keep its data?"), options(DATABASES)));
-    const channels = answer(await pickMany(step(4, 7, "How do you want to reach it?"), options(CHANNELS)));
-    const tools = answer(await pickMany(step(5, 7, "What should it be able to do?"), options(TOOLS)));
+    const registry = await chooseRegistry(dirname(configPath));
+    const catalog = await loadCatalog(registry);
+    const ai = answer(await pickOne(step(2, 7, "Which AI should power the agent?"), options(catalog.ai)));
+    const environment = answer(await pickOne(step(3, 7, "Where should it read keys and settings from?"), options(catalog.environment)));
+    const database = answer(await pickOne(step(4, 7, "Where should it keep its data?"), options(catalog.database)));
+    const channels = answer(await pickMany(step(5, 7, "How do you want to reach it?"), options(catalog.channel)));
+    const tools = answer(await pickMany(step(6, 7, "What should it be able to do?"), options(catalog.tool)));
     const features = [ai, environment, database, ...channels, ...tools];
 
     // Features with keys can be configured now or left for later; they show up red until their keys are set.
     const needsKeys = features.filter((feature) => feature.secrets?.some((secret) => !secret.optional));
-    const now = needsKeys.length === 0 ? [] : answer(await pickMany(step(6, 7, "Enter keys now for… (unpick to set up later)"), options(needsKeys), needsKeys));
+    const now = needsKeys.length === 0 ? [] : answer(await pickMany(step(7, 7, "Enter keys now for… (unpick to set up later)"), options(needsKeys), needsKeys));
     const later = needsKeys.filter((feature) => !now.includes(feature));
 
     const env: Record<string, string> = {};
@@ -475,7 +564,6 @@ export async function runOnboarding(configPath: string): Promise<"start" | "save
         if (value) env[secret.env] = value;
       }
     }
-    const registry = await chooseRegistry(dirname(configPath));
     // A package the registry lacks would stop the whole host at install time, so leave it out now.
     if (await registryReachable(registry)) {
       const missing = await missingPackages(registry, features.flatMap((feature) => feature.components.map((component) => component.package)));

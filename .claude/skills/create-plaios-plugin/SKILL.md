@@ -38,6 +38,7 @@ Kinds: `input`, `output`, `action`, `agent`, `orchestrator`, `discovery`, `datab
 - **The manifest** declares what you need in `required` / `optional`. Keep its `version` equal to `package.json`.
 - **Every `input` needs a `web` page.** The host flags an input without one as a runtime error.
 - **Keep `plaios` in `keywords`.** The Store finds packages by it and groups them by the kind keywords the scaffold adds.
+- **Fill in `plaios.setup` in `package.json`** (label, hint, `secrets`) so `plaios init` offers the plugin. `step` is `ai`, `environment`, `database`, `channel` or `tool`; every secret `env` should match a manifest `config[]` env. Format in `35-ship.md`.
 - Set up lazily: `initialize()` is never called. Release every port and timer in `close()` / `stop()`, because any config change rebuilds every component.
 
 ## 3. Check

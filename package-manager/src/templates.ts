@@ -16,6 +16,8 @@ export function renderPackageJson(values: TemplateValues, kinds: readonly Plugin
       version: "0.1.0",
       // The Store lists registry packages found by the "plaios" keyword and groups them by kind.
       keywords: ["plaios", "capability", ...kinds],
+      // `plaios init` reads these from the registry to offer the plugin in the setup.
+      plaios: { setup: renderSetupEntries(values, kinds) },
       private: true,
       type: "module",
       sideEffects: ["**/*.css"],
@@ -53,6 +55,20 @@ export function renderPackageJson(values: TemplateValues, kinds: readonly Plugin
     null,
     2,
   )}\n`;
+}
+
+/** Which `plaios init` step offers each kind; the other kinds are infrastructure the setup always installs. */
+const SETUP_STEPS: Partial<Record<PluginKind, string>> = { system2: "ai", env: "environment", database: "database", input: "channel", output: "channel", action: "tool" };
+
+function renderSetupEntries(values: TemplateValues, kinds: readonly PluginKind[]) {
+  const steps = new Map<string, { interface: string; instanceId: string }[]>();
+  for (const kind of kinds) {
+    const step = SETUP_STEPS[kind];
+    if (!step) continue;
+    const instanceId = kind === "database" ? "database:main" : `${kind === "system2" ? "ai" : kind}:${values.name}`;
+    steps.set(step, [...(steps.get(step) ?? []), { interface: `${values.name}.${kind}`, instanceId }]);
+  }
+  return [...steps].map(([step, components]) => ({ step, label: values.pascalName, hint: "TODO one line on what it does", components, secrets: [] }));
 }
 
 export function renderTsConfig(): string {
